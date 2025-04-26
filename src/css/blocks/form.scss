@@ -1,0 +1,110 @@
+@use "../global/variables" as var;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  &__fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    padding: 15px;
+
+    &--row {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  &__legend {
+    padding: 0 10px;
+
+    font-size: 24px;
+    font-weight: 600;
+    text-wrap: nowrap;
+  }
+
+  &__caption {
+
+  }
+
+  &__label {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+
+    font-size: 18px;
+    text-wrap: nowrap;
+
+    @media (max-width: var.$tablet-max-width) {
+      font-size: 16px;
+    }
+    @media (max-width: var.$mobile-mid-width) {
+      font-size: 14px;
+    }
+
+    &--radio {
+      align-items: center;
+
+      cursor: pointer;
+    }
+
+    &--range {
+      flex-direction: column;
+      gap: 35px;
+    }
+  }
+
+  &__svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  &__range-wrapper {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 25px auto 25px;
+    gap: 5px;
+    width: 100%;
+  }
+
+  &__input {
+    display: flex;
+
+    font-size: 16px;
+
+    background-color: var.$colorWhite;
+    border: none;
+
+    border-radius: 5px;
+
+    @media (max-width: var.$tablet-max-width) {
+      font-size: 14px;
+    }
+    @media (max-width: var.$mobile-mid-width) {
+      font-size: 12px;
+    }
+
+    &--range {
+      min-width: 250px;
+    }
+  }
+}

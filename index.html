@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html class="page" lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Генератор снегопада</title>
+    <meta name="description" content="Описание">
+    <meta name="keywords" content="Ключевые слова">
+
+    <link rel="preload" href="/public/fonts/Jost-Variable.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="/public/fonts/Jost-Italic-Variable.woff2" as="font" type="font/woff2"
+          crossorigin="anonymous">
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="application-name" content="Генератор снегопада">
+
+    <link href="/public/css/vendor/vue-slider-component.min.css" rel="stylesheet">
+    <link href="/public/css/style.min.css" rel="stylesheet">
+</head>
+
+<body class="page__body">
+<div id="app">
+    <header class="page__header header">
+        <div class="header__wrapper">
+            <div class="header__logo">
+                <svg class="header__logo-image" xmlns="http://www.w3.org/2000/svg">
+                    <use xlink:href="/public/img/sprite.svg#logo"/>
+                </svg>
+
+                <span class="header__logo-text">Генератор снегопада</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page__main main">
+        <div class="page__wrapper">
+            <!-- Главная страница -->
+            <transition name="fade" mode="out-in">
+                <section class="page__content" v-if="!isGenerated && !isSettings && !isLoading">
+                    <h1 class="page__title">Добро пожаловать!</h1>
+
+                    <p class="page__text">Создай уникальный снегопад для добавления на свой сайт</p>
+
+                    <button class="page__button button button--default" id="button-start" type="button"
+                            @click="showSettings">
+                        Поехали
+                    </button>
+                </section>
+            </transition>
+
+            <!-- Настройки -->
+            <transition name="fade" mode="out-in">
+                <section class="page__content" v-if="!isGenerated && isSettings && !isLoading">
+                    <h1 class="page__title">Параметры</h1>
+
+                    <p class="page__text">Настрой снегопад по своему вкусу</p>
+
+                    <form class="page__form form" @submit.prevent="submitSettings">
+
+                        <fieldset class="form__fieldset form__fieldset--row" id="snowflake-type">
+                            <legend class="form__legend">Вид снежинок</legend>
+
+                            <label class="form__label form__label--radio" v-for="(svg, key) in snowflakesSVG"
+                                   :key="key">
+                                <input class="form__input" type="radio" name="snowflakes-type" :value="key"
+                                       v-model="settings.snowflakesType"/>
+                                <span class="form__svg" v-html="svg"></span>
+                            </label>
+
+                            <label class="form__label form__label--radio">
+                                <input class="form__input" type="radio" name="snowflakes-type" value="custom"
+                                       v-model="settings.snowflakesType"/>
+                                <span class="form__svg" v-if="settings.customSnowflakeSVG"
+                                      v-html="settings.customSnowflakeSVG"></span>
+                                <input class="form__input-file" type="file" accept=".svg" @change="onCustomSVGUpload"/>
+                            </label>
+                        </fieldset>
+
+                        <fieldset class="form__fieldset" id="snowflake-parameters">
+                            <legend class="form__legend">Параметры снежинок</legend>
+
+                            <label class="form__label form__label--range">
+                                <span class="form__label-text">Размер снежинок:</span>
+
+                                <vue-slider
+                                    v-model="settings.snowflakesSize"
+                                    :min="ranges.snowflakesSize.min"
+                                    :max="ranges.snowflakesSize.max"
+                                    :interval="5"
+                                    :tooltip="'always'"
+                                    :lazy="true"
+                                    :enable-cross="false"
+                                    :dot-size="16"
+                                    :height="6"
+                                    :contained="true"
+                                    :range="true"
+                                    class="form__input form__input--range"
+                                />
+                            </label>
+
+                            <label class="form__label form__label--range">
+                                <span class="form__label-text">Прозрачность снежинок:</span>
+
+                                <vue-slider
+                                    v-model="settings.snowflakesVisibility"
+                                    :min="ranges.snowflakesVisibility.min"
+                                    :max="ranges.snowflakesVisibility.max"
+                                    :interval="0.1"
+                                    :tooltip="'always'"
+                                    :lazy="true"
+                                    :enable-cross="false"
+                                    :dot-size="16"
+                                    :height="6"
+                                    :contained="true"
+                                    :range="true"
+                                    class="form__input form__input--range"
+                                />
+                            </label>
+                        </fieldset>
+
+                        <fieldset class="form__fieldset" id="snowfall">
+                            <legend class="form__legend">Снегопад</legend>
+
+                            <label class="form__label form__label--range">
+                                <span class="form__label-text">Количество снежинок:</span>
+
+                                <vue-slider
+                                    v-model="settings.snowflakesCount"
+                                    :min="ranges.snowflakesCount.min"
+                                    :max="ranges.snowflakesCount.max"
+                                    :interval="10"
+                                    :tooltip="'always'"
+                                    :lazy="true"
+                                    :dot-size="16"
+                                    :height="6"
+                                    :contained="true"
+                                    :range="false"
+                                    class="form__input form__input--range"
+                                />
+                            </label>
+
+                            <label class="form__label form__label--range">
+                                <span class="form__label-text">Скорость падения:</span>
+
+                                <vue-slider
+                                    v-model="settings.snowfallSpeed"
+                                    :min="ranges.snowfallSpeed.min"
+                                    :max="ranges.snowfallSpeed.max"
+                                    :interval="10"
+                                    :tooltip="'always'"
+                                    :lazy="true"
+                                    :enable-cross="false"
+                                    :dot-size="16"
+                                    :height="6"
+                                    :contained="true"
+                                    :range="true"
+                                    class="form__input form__input--range"
+                                />
+                            </label>
+                        </fieldset>
+
+                        <fieldset class="form__fieldset" id="sway">
+                            <legend class="form__legend">Колебания</legend>
+
+                            <label class="form__label form__label--checkbox">
+                                <input class="form__input" type="checkbox" name="snowflakes-sway"
+                                       v-model="settings.swayEnabled">
+
+                                <span class="form__label-text">Включить колебания</span>
+                            </label>
+
+                            <transition name="fade-no-delay" mode="out-in">
+                                <div class="form__group" v-show="settings.swayEnabled">
+                                    <label class="form__label form__label--range">
+                                        <span class="form__label-text">Амплитуда:</span>
+
+                                        <vue-slider
+                                            v-model="settings.swayAmplitude"
+                                            :min="ranges.swayAmplitude.min"
+                                            :max="ranges.swayAmplitude.max"
+                                            :interval="5"
+                                            :tooltip="'always'"
+                                            :lazy="true"
+                                            :enable-cross="false"
+                                            :dot-size="16"
+                                            :height="6"
+                                            :contained="true"
+                                            :range="true"
+                                            class="form__input form__input--range"
+                                        />
+                                    </label>
+
+                                    <label class="form__label form__label--range">
+                                        <span class="form__label-text">Частота:</span>
+
+                                        <vue-slider
+                                            v-model="settings.swayFrequency"
+                                            :min="ranges.swayFrequency.min"
+                                            :max="ranges.swayFrequency.max"
+                                            :interval="0.1"
+                                            :tooltip="'always'"
+                                            :lazy="true"
+                                            :enable-cross="false"
+                                            :dot-size="16"
+                                            :height="6"
+                                            :contained="true"
+                                            :range="true"
+                                            class="form__input form__input--range"
+                                        />
+                                    </label>
+                                </div>
+                            </transition>
+                        </fieldset>
+
+                        <fieldset class="form__fieldset" id="rotation">
+                            <legend class="form__legend">Вращение</legend>
+
+                            <label class="form__label form__label--checkbox">
+                                <input class="form__input" type="checkbox" name="snowflakes-rotation"
+                                       v-model="settings.rotationEnabled">
+
+                                <span class="form__label-text">Включить вращение</span>
+                            </label>
+
+                            <transition name="fade-no-delay" mode="out-in">
+                                <div class="form__group" v-show="settings.rotationEnabled">
+                                    <label class="form__label form__label--range">
+                                        <span class="form__label-text">Скорость вращения:</span>
+
+                                        <vue-slider
+                                            v-model="settings.rotationSpeed"
+                                            :min="ranges.rotationSpeed.min"
+                                            :max="ranges.rotationSpeed.max"
+                                            :interval="5"
+                                            :tooltip="'always'"
+                                            :lazy="true"
+                                            :enable-cross="false"
+                                            :dot-size="16"
+                                            :height="6"
+                                            :contained="true"
+                                            :range="true"
+                                            class="form__input form__input--range"
+                                        />
+                                    </label>
+                                </div>
+                            </transition>
+                        </fieldset>
+
+                        <fieldset class="form__fieldset" id="wind">
+                            <legend class="form__legend">Ветер</legend>
+
+                            <label class="form__label form__label--checkbox">
+                                <input class="form__input" type="checkbox" name="snowflakes-wind"
+                                       v-model="settings.windEnabled">
+
+                                <span class="form__label-text">Включить ветер</span>
+                            </label>
+
+                            <transition name="fade-no-delay" mode="out-in">
+                                <div class="form__group" v-show="settings.windEnabled">
+                                    <div class="form__wrapper">
+                                        <span class="form__caption">Направление ветра:</span>
+
+                                        <label class="form__label form__label--radio">
+                                            <input class="form__input" type="radio" name="wind-type" value="left"
+                                                   v-model="settings.windType"/>
+                                            <span class="form__label-text">Слева направо</span>
+                                        </label>
+
+                                        <label class="form__label form__label--radio">
+                                            <input class="form__input" type="radio" name="wind-type" value="right"
+                                                   v-model="settings.windType"/>
+                                            <span class="form__label-text">Справа налево</span>
+                                        </label>
+                                    </div>
+
+                                    <label class="form__label form__label--range">
+                                        <span class="form__label-text">Скорость ветра:</span>
+
+                                        <vue-slider
+                                            v-model="settings.windSpeed"
+                                            :min="ranges.windSpeed.min"
+                                            :max="ranges.windSpeed.max"
+                                            :interval="10"
+                                            :tooltip="'always'"
+                                            :lazy="true"
+                                            :dot-size="16"
+                                            :height="6"
+                                            :contained="true"
+                                            :range="false"
+                                            class="form__input form__input--range"
+                                        />
+                                    </label>
+                                </div>
+                            </transition>
+                        </fieldset>
+
+                        <button class="page__button button button--default" id="button-next" type="submit">
+                            Продолжить
+                        </button>
+                    </form>
+                </section>
+            </transition>
+
+            <!-- Генерация -->
+            <transition name="fade" mode="out-in">
+                <section class="page__content" v-if="isLoading">
+                    <h1 class="page__title">Генерация файла...</h1>
+                </section>
+            </transition>
+
+            <!-- Результат -->
+            <transition name="fade" mode="out-in">
+                <section class="page__content" v-if="isGenerated">
+                    <h1 class="page__title">Результат</h1>
+
+                    <p class="page__text">Скачай скрипт для вставки на сайт и подключи его перед закрывающим тегом <i>body</i>
+                    </p>
+
+                    <button class="page__button button button--default"
+                            id="button-download"
+                            :disabled="!isGenerated || !generatedScriptUrl"
+                            @click="downloadScript">
+                        Скачать
+                    </button>
+
+                    <button class="page__button button button--default" type="reset"
+                            id="button-reset" @click="createNewScript">
+                        Создать новый
+                    </button>
+                </section>
+            </transition>
+        </div>
+    </main>
+
+    <footer class="page__footer footer">
+        <div class="footer__wrapper">
+            <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-generator">
+                <svg class="footer__info-icon" xmlns="http://www.w3.org/2000/svg">
+                    <use xlink:href="/public/img/sprite.svg#icon-github"/>
+                </svg>
+
+                <span class="footer__info-text">Проект на GitHub</span>
+            </a>
+
+            <a class="footer__info link" href="https://yuriyplotnikovv.ru/" target="_blank"
+               title="Website - YuriyPlotnikovv">
+                <svg class="footer__info-icon" xmlns="http://www.w3.org/2000/svg">
+                    <use xlink:href="/public/img/sprite.svg#icon-developer"/>
+                </svg>
+
+                <span class="footer__info-text">Yuriy Plotnikovv</span>
+            </a>
+        </div>
+    </footer>
+</div>
+
+<script src="/public/js/vendor/vue.min.js"></script>
+<script src="/public/js/vendor/vue-slider-component.min.js"></script>
+<script src="/public/js/script.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+@use "../global/variables" as var;
+
+.page {
+  &__body {
+    position: relative;
+    z-index: 0;
+
+    height: 100%;
+
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  &__header {
+    z-index: 4;
+
+    width: 100%;
+
+    color: var.$colorBlackTwo;
+
+    background-color: var.$colorGraySeven;
+  }
+
+  &__main {
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__wrapper {
+    position: relative;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var.$desktop-mid-width;
+    height: 100%;
+    margin: 0 auto;
+    padding: 60px 100px 90px;
+
+    @media (max-width: var.$desktop-mid-width) {
+      padding: 50px 80px 80px;
+    }
+    @media (max-width: var.$tablet-max-width) {
+      padding: 40px 40px 70px;
+    }
+    @media (max-width: var.$mobile-max-width) {
+      padding: 30px 20px 60px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    @media (max-width: var.$tablet-max-width) {
+      gap: 25px;
+    }
+    @media (max-width: var.$mobile-max-width) {
+      gap: 20px;
+    }
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 500;
+
+    @media (max-width: var.$tablet-max-width) {
+      font-size: 36px;
+    }
+    @media (max-width: var.$mobile-max-width) {
+      font-size: 26px;
+    }
+    @media (max-width: var.$mobile-mid-width) {
+      font-size: 22px;
+    }
+  }
+
+  &__text {
+    font-size: 22px;
+
+    @media (max-width: var.$tablet-max-width) {
+      font-size: 20px;
+    }
+    @media (max-width: var.$mobile-max-width) {
+      font-size: 18px;
+    }
+    @media (max-width: var.$mobile-mid-width) {
+      font-size: 16px;
+    }
+  }
+
+  &__form {
+    width: 100%;
+  }
+
+  &__footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+
+    width: 100%;
+
+    color: var.$colorBlackTwo;
+
+    background-color: var.$colorGraySeven;
+  }
+}
