@@ -41,7 +41,7 @@ jobs:
                   username: ${{ secrets.FTP_USERNAME }}
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftps
-                  local-dir: ./
+                  local-dir: ./var/www/snowfall-generator/
                   exclude: |
                       **/.git*
                       **/node_modules/**
