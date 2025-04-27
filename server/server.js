@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { generateScript } = require('./generator');
+const {generateScript} = require('./generator');
 
 const SERVER_PORT = 3000;
 const STATIC_FILES_ROOT = path.resolve(__dirname, '../');
@@ -12,24 +12,18 @@ const GENERATED_DIR = path.resolve(__dirname, '../generated-scripts');
 const FILE_TTL = 3 * 24 * 60 * 60 * 1000;
 const CLEAN_INTERVAL = 24 * 60 * 60 * 1000;
 
-const IS_PRODUCTION = true;
-
 const app = express();
 
-if (IS_PRODUCTION) {
-  const allowedOrigins = ['https://snowfall-generator.ru'];
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('CORS policy: Access denied'));
-      }
+const allowedOrigins = ['https://snowfall-generator.ru'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Access denied'));
     }
-  }));
-} else {
-  app.use(cors({ origin: '*' }));
-}
+  }
+}));
 
 app.use(express.json());
 app.use(express.static(STATIC_FILES_ROOT));
@@ -39,10 +33,11 @@ app.post('/generate-script', async (req, res) => {
     const params = req.body;
     const generatedFilePath = await generateScript(params);
     const relativePath = path.relative(STATIC_FILES_ROOT, generatedFilePath).replace(/\\/g, '/');
-    res.json({ scriptUrl: `/${relativePath}` });
-  } catch (error) {
+    res.json({scriptUrl: `/${relativePath}`});
+  }
+  catch (error) {
     console.error('Script generation error:', error);
-    res.status(500).json({ error: 'Script generation error' });
+    res.status(500).json({error: 'Script generation error'});
   }
 });
 
@@ -64,7 +59,8 @@ async function cleanOldFiles() {
         console.log(`Deleted old file: ${file}`);
       }
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error during cleaning old files:', error);
   }
 }
