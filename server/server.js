@@ -1,13 +1,11 @@
 const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const { generateScript } = require('./generator');
 
 const SERVER_PORT = 3000;
-const SSL_KEY_PATH = path.join(__dirname, 'server.key');
-const SSL_CERT_PATH = path.join(__dirname, 'server.cert');
 const STATIC_FILES_ROOT = path.resolve(__dirname, '../');
 const GENERATED_DIR = path.resolve(__dirname, '../generated-scripts');
 
@@ -48,18 +46,8 @@ app.post('/generate-script', async (req, res) => {
   }
 });
 
-if (!fs.existsSync(SSL_KEY_PATH) || !fs.existsSync(SSL_CERT_PATH)) {
-  console.error('SSL key or certificate not found. Server shutdown.');
-  process.exit(1);
-}
-
-const sslOptions = {
-  key: fs.readFileSync(SSL_KEY_PATH),
-  cert: fs.readFileSync(SSL_CERT_PATH),
-};
-
-https.createServer(sslOptions, app).listen(SERVER_PORT, () => {
-  console.log(`HTTPS server running at https://localhost:${SERVER_PORT}`);
+http.createServer(app).listen(SERVER_PORT, () => {
+  console.log(`HTTP server running at http://localhost:${SERVER_PORT}`);
 });
 
 async function cleanOldFiles() {
