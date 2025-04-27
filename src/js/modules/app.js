@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     rotationSpeed: [10, 40],
   };
 
+  const snowflakeKeys = Object.keys(snowflakesSVG);
+  if (snowflakeKeys.length > 0) {
+    defaultSettings.snowflakesType = snowflakeKeys[0];
+  }
+
   const snowfall = new Snowfall('snow-container', {
     snowflakesSVG,
     ...JSON.parse(JSON.stringify(defaultSettings))
@@ -50,15 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
           snowfall.updateSettings(newSettings);
         },
         deep: true
-      },
-      snowflakesSVG: {
-        handler(newValue) {
-          const keys = Object.keys(newValue);
-          if (keys.length > 0 && !this.settings.snowflakesType) {
-            this.settings.snowflakesType = keys[0];
-          }
-        },
-        immediate: true
       },
       isGenerated(newVal) {
         setCookie('isGenerated', newVal, 3);
