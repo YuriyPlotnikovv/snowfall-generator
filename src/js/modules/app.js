@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const snowfall = new Snowfall('snow-container', {
+  const defaultSettings = {
     snowflakesType: '',
     customSnowflakeSVG: '',
-    snowflakesSVG,
     snowflakesCount: 50,
     snowflakesSize: [5, 50],
     snowflakesVisibility: [0.1, 1],
@@ -15,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     swayFrequency: [0.1, 0.5],
     rotationEnabled: false,
     rotationSpeed: [10, 40],
+  };
+
+  const snowfall = new Snowfall('snow-container', {
+    snowflakesSVG,
+    ...JSON.parse(JSON.stringify(defaultSettings))
   });
 
   new Vue({
@@ -27,23 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isLoading: false,
       isGenerated: getCookie('isGenerated') === 'true',
       generatedScriptUrl: getCookie('generatedScriptUrl') || '',
-      defaultSettings: {
-        snowflakesType: '',
-        customSnowflakeSVG: '',
-        snowflakesCount: 50,
-        snowflakesSize: [5, 50],
-        snowflakesVisibility: [0.1, 1],
-        snowfallSpeed: [10, 100],
-        windEnabled: false,
-        windType: 'left',
-        windSpeed: 50,
-        swayEnabled: false,
-        swayAmplitude: [5, 20],
-        swayFrequency: [0.1, 0.5],
-        rotationEnabled: false,
-        rotationSpeed: [10, 40],
-      },
-      settings: JSON.parse(JSON.stringify(this.defaultSettings)),
+      settings: JSON.parse(JSON.stringify(defaultSettings)),
       snowflakesSVG,
       ranges: {
         snowflakesCount: {min: 10, max: 150},
@@ -168,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.generatedScriptUrl = '';
         this.isSettings = true;
 
-        this.settings = JSON.parse(JSON.stringify(this.defaultSettings));
+        this.settings = JSON.parse(JSON.stringify(defaultSettings));
       },
     }
   });
