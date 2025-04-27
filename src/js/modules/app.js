@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isLoading: false,
       isGenerated: getCookie('isGenerated') === 'true',
       generatedScriptUrl: getCookie('generatedScriptUrl') || '',
-      settings: {
+      defaultSettings: {
         snowflakesType: '',
         customSnowflakeSVG: '',
         snowflakesCount: 50,
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         snowflakesVisibility: [0.1, 1],
         snowfallSpeed: [10, 100],
         windEnabled: false,
-        windType: '',
+        windType: 'left',
         windSpeed: 50,
         swayEnabled: false,
         swayAmplitude: [5, 20],
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rotationEnabled: false,
         rotationSpeed: [10, 40],
       },
+      settings: {},
       snowflakesSVG,
       ranges: {
         snowflakesCount: {min: 10, max: 150},
@@ -54,6 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         swayFrequency: {min: 0.1, max: 1},
         rotationSpeed: {min: 10, max: 100},
       },
+    },
+    created() {
+      this.settings = JSON.parse(JSON.stringify(this.defaultSettings));
     },
     watch: {
       settings: {
@@ -166,6 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
         this.isGenerated = false;
         this.generatedScriptUrl = '';
         this.isSettings = true;
+
+        this.settings = JSON.parse(JSON.stringify(this.defaultSettings));
       },
     }
   });

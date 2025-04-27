@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Генератор снегопада</title>
-    <meta name="description" content="Описание">
-    <meta name="keywords" content="Ключевые слова">
+    <title>Онлайн генератор снегопада — Создай эффект снега для сайта</title>
+    <meta name="description"
+          content="Бесплатный онлайн генератор снегопада. Создайте уникальный эффект падающих снежинок для вашего сайта за пару кликов.">
+    <meta name="keywords" content="генератор снегопада, снегопад на сайт, снежинки онлайн, эффект снега">
 
     <link rel="preload" href="/public/fonts/Jost-Variable.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="preload" href="/public/fonts/Jost-Italic-Variable.woff2" as="font" type="font/woff2"
@@ -17,6 +18,37 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="application-name" content="Генератор снегопада">
+
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Генератор снегопада — онлайн создание эффекта снега для сайта"/>
+    <meta property="og:description"
+          content="Бесплатный онлайн генератор снегопада. Создайте уникальный эффект падающих снежинок для вашего сайта за пару кликов."/>
+    <meta property="og:url" content="https://snowfall-generator.ru/"/>
+    <meta property="og:locale" content="ru_RU"/>
+    <meta property="og:site_name" content="Генератор снегопада"/>
+    <meta property="og:image" content="https://snowfall-generator.ru/public/img/og-image.png"/>
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Генератор снегопада",
+            "url": "https://snowfall-generator.ru/",
+            "description": "Бесплатный онлайн генератор снегопада. Создайте уникальный эффект падающих снежинок для вашего сайта за пару кликов.",
+            "applicationCategory": "UtilitiesApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Современный браузер с поддержкой JavaScript",
+            "creator": {
+                "@type": "Person",
+                "name": "Yuriy Plotnikovv",
+                "url": "https://yuriyplotnikovv.ru/"
+            }
+        }
+    </script>
+
 
     <link href="/public/css/vendor/vue-slider-component.min.css" rel="stylesheet">
     <link href="/public/css/style.min.css" rel="stylesheet">
@@ -37,13 +69,15 @@
     </header>
 
     <main class="page__main main">
+        <h1 class="visually-hidden">Онлайн генератор снегопада для вашего сайта</h1>
+
         <div class="page__wrapper">
             <!-- Главная страница -->
             <transition name="fade" mode="out-in">
                 <section class="page__content" v-if="!isGenerated && !isSettings && !isLoading">
-                    <h1 class="page__title">Добро пожаловать!</h1>
+                    <p class="page__title">Добро пожаловать!</p>
 
-                    <p class="page__text">Создай уникальный снегопад для добавления на свой сайт</p>
+                    <p class="page__text">Создай уникальный и красивый эффект падающих снежинок для своего сайта.</p>
 
                     <button class="page__button button button--default" id="button-start" type="button"
                             @click="showSettings">
@@ -55,7 +89,7 @@
             <!-- Настройки -->
             <transition name="fade" mode="out-in">
                 <section class="page__content" v-if="!isGenerated && isSettings && !isLoading">
-                    <h1 class="page__title">Параметры</h1>
+                    <p class="page__title">Параметры</p>
 
                     <p class="page__text">Настрой снегопад по своему вкусу</p>
 
@@ -266,7 +300,7 @@
                                         <span class="form__caption">Направление ветра:</span>
 
                                         <label class="form__label form__label--radio">
-                                            <input class="form__input" type="radio" name="wind-type" value="left"
+                                            <input class="form__input" type="radio" name="wind-type" value="left" checked
                                                    v-model="settings.windType"/>
                                             <span class="form__label-text">Слева направо</span>
                                         </label>
@@ -309,14 +343,14 @@
             <!-- Генерация -->
             <transition name="fade" mode="out-in">
                 <section class="page__content" v-if="isLoading">
-                    <h1 class="page__title">Генерация файла...</h1>
+                    <p class="page__title">Генерация файла с твоими настройками...</p>
                 </section>
             </transition>
 
             <!-- Результат -->
             <transition name="fade" mode="out-in">
                 <section class="page__content" v-if="isGenerated">
-                    <h1 class="page__title">Результат</h1>
+                    <p class="page__title">Результат</p>
 
                     <p class="page__text">Скачай скрипт для вставки на сайт и подключи его перед закрывающим тегом <i>body</i>
                     </p>
@@ -339,7 +373,9 @@
 
     <footer class="page__footer footer">
         <div class="footer__wrapper">
-            <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-generator">
+            <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-generator" target="_blank"
+               rel="noopener noreferrer"
+               title="GitHub - YuriyPlotnikovv/snowfall-generator">
                 <svg class="footer__info-icon" xmlns="http://www.w3.org/2000/svg">
                     <use xlink:href="/public/img/sprite.svg#icon-github"/>
                 </svg>
@@ -347,7 +383,7 @@
                 <span class="footer__info-text">Проект на GitHub</span>
             </a>
 
-            <a class="footer__info link" href="https://yuriyplotnikovv.ru/" target="_blank"
+            <a class="footer__info link" href="https://yuriyplotnikovv.ru/" target="_blank" rel="noopener noreferrer"
                title="Website - YuriyPlotnikovv">
                 <svg class="footer__info-icon" xmlns="http://www.w3.org/2000/svg">
                     <use xlink:href="/public/img/sprite.svg#icon-developer"/>
