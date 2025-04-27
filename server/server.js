@@ -34,7 +34,7 @@ if (IS_PRODUCTION) {
 app.use(express.json());
 app.use(express.static(STATIC_FILES_ROOT));
 
-app.post('/generate-script', async (req, res) => {
+app.get('/generate-script', async (req, res) => {
   try {
     const params = req.body;
     const generatedFilePath = await generateScript(params);
