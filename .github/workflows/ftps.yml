@@ -55,9 +55,9 @@ jobs:
             - name: SSH Deploy server and restart
               uses: appleboy/ssh-action@v0.1.7
               with:
-                  host: ${{ secrets.SSH_HOST }}
-                  username: ${{ secrets.SSH_USER }}
-                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  host: ${{ secrets.FTP_SERVER }}
+                  username: ${{ secrets.FTP_USERNAME }}
+                  key: ${{ secrets.FTP_PASSWORD }}
                   script: |
                       cd /var/www/snowfall-generator/server
                       git pull origin main
