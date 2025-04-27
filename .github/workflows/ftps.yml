@@ -33,31 +33,34 @@ jobs:
             - name: Build project
               run: npm run build
 
-            - name: FTP Deploy frontend files
-              uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+            - name: Prepare deploy folder with exclusions
+              run: |
+                  rm -rf deploy
+                  mkdir deploy
+                  rsync -av --progress . deploy/ \
+                    --exclude '.git' \
+                    --exclude 'node_modules' \
+                    --exclude 'src' \
+                    --exclude 'deploy' \
+                    --exclude 'README.md' \
+                    --exclude 'package-lock.json' \
+                    --exclude 'gulpfile.js'
+
+            - name: Upload frontend files via SFTP
+              uses: appleboy/scp-action@v0.1.3
               with:
-                  server: ${{ secrets.FTP_SERVER }}
-                  username: ${{ secrets.FTP_USERNAME }}
-                  password: ${{ secrets.FTP_PASSWORD }}
-                  protocol: ftps
-                  local-dir: ./
-                  server-dir: /var/www/snowfall-generator/
-                  exclude: |
-                      **/.git*
-                      **/node_modules/**
-                      **/src/**
-                      **/package.json
-                      **/package-lock.json
-                      **/gulpfile.js
-                      **/README.md
-                      **/LICENSE
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  password: ${{ secrets.SSH_PASSWORD }}
+                  source: "deploy/**"
+                  target: "/var/www/snowfall-generator"
 
             - name: SSH Deploy server and restart
               uses: appleboy/ssh-action@v0.1.7
               with:
-                  host: ${{ secrets.FTP_SERVER }}
-                  username: ${{ secrets.FTP_USERNAME }}
-                  key: ${{ secrets.FTP_PASSWORD }}
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  password: ${{ secrets.SSH_PASSWORD }}
                   script: |
                       cd /var/www/snowfall-generator/server
                       git pull origin main
