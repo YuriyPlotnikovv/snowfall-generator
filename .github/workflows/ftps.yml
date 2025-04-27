@@ -1,4 +1,4 @@
-name: Deploy my-website-new to Beget via FTP
+name: Deploy snowfall-generator to Beget
 
 on:
     push:
@@ -9,7 +9,6 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-        environment: snowfall
 
         steps:
             - name: Checkout code
@@ -34,14 +33,15 @@ jobs:
             - name: Build project
               run: npm run build
 
-            - name: FTP Deploy
+            - name: FTP Deploy frontend files
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
               with:
                   server: ${{ secrets.FTP_SERVER }}
                   username: ${{ secrets.FTP_USERNAME }}
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftps
-                  local-dir: ./var/www/snowfall-generator/
+                  local-dir: ./
+                  server-dir: /var/www/snowfall-generator/
                   exclude: |
                       **/.git*
                       **/node_modules/**
@@ -51,3 +51,15 @@ jobs:
                       **/gulpfile.js
                       **/README.md
                       **/LICENSE
+
+            - name: SSH Deploy server and restart
+              uses: appleboy/ssh-action@v0.1.7
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script: |
+                      cd /var/www/snowfall-generator/server
+                      git pull origin main
+                      npm install --production
+                      pm2 restart server.js
