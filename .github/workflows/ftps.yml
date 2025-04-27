@@ -39,6 +39,7 @@ jobs:
                   mkdir deploy
                   rsync -av --progress . deploy/ \
                     --exclude '.git' \
+                    --exclude '.github' \
                     --exclude 'node_modules' \
                     --exclude 'src' \
                     --exclude 'deploy' \
@@ -52,7 +53,7 @@ jobs:
                   host: ${{ secrets.SSH_HOST }}
                   username: ${{ secrets.SSH_USER }}
                   password: ${{ secrets.SSH_PASSWORD }}
-                  source: "deploy/**"
+                  source: "deploy/*"
                   target: "/var/www/snowfall-generator"
 
             - name: SSH Deploy server and restart
@@ -65,4 +66,4 @@ jobs:
                       cd /var/www/snowfall-generator/server
                       git pull origin main
                       npm install --production
-                      pm2 restart server.js
+                      pm2 restart snowfall-server || pm2 start server.js --name snowfall-server
