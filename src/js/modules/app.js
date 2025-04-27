@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.generatedScriptUrl = '';
         this.isSettings = true;
 
-        this.settings = JSON.parse(JSON.stringify(defaultSettings));
+        this.settings = {...JSON.parse(JSON.stringify(defaultSettings))};
       },
     }
   });
