@@ -18,14 +18,6 @@
 
 ---
 
-## Использование API
-
-- **POST** `/generate-script`
-
-  Тело запроса — JSON с параметрами генерации. В ответе — ссылка на ZIP-архив с готовым скриптом.
-
----
-
 ## Лицензия
 
 Проект распространяется под лицензией [GNU Affero General Public License v3 (AGPLv3)](https://www.gnu.org/licenses/agpl-3.0.html).
