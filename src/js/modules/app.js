@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
           snowflakesSVG: this.snowflakesSVG
         };
 
-        fetch('/generate-script', {
+        fetch('https://snowfall-generator.ru/generate-script', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
