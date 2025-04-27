@@ -12,7 +12,7 @@ const GENERATED_DIR = path.resolve(__dirname, '../generated-scripts');
 const FILE_TTL = 3 * 24 * 60 * 60 * 1000;
 const CLEAN_INTERVAL = 24 * 60 * 60 * 1000;
 
-const IS_PRODUCTION = false;
+const IS_PRODUCTION = true;
 
 const app = express();
 

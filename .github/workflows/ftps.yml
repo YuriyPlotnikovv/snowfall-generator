@@ -65,6 +65,5 @@ jobs:
                   password: ${{ secrets.SSH_PASSWORD }}
                   script: |
                       cd /var/www/snowfall-generator/server
-                      git pull origin main
                       npm install --production
                       pm2 restart snowfall-server || pm2 start server.js --name snowfall-server
