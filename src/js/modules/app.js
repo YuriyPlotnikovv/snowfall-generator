@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
       settings: JSON.parse(JSON.stringify(defaultSettings)),
       snowflakesSVG,
       ranges: {
-        snowflakesCount: {min: 10, max: 150},
-        snowflakesSize: {min: 5, max: 100},
+        snowflakesCount: {min: 30, max: 200},
+        snowflakesSize: {min: 5, max: 150},
         snowflakesVisibility: {min: 0.1, max: 1},
         snowfallSpeed: {min: 10, max: 300},
         windSpeed: {min: 0, max: 150},

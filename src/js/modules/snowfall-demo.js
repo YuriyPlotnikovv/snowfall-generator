@@ -24,7 +24,7 @@ class Snowfall {
     }
 
     if (!this.container.shadowRoot) {
-      this.shadow = this.container.attachShadow({ mode: 'closed' });
+      this.shadow = this.container.attachShadow({mode: 'closed'});
     } else {
       this.shadow = this.container.shadowRoot;
     }
@@ -77,14 +77,17 @@ class Snowfall {
 
   getSnowflakeCountByWidth(width) {
     const baseCount = this.settings.snowflakesCount || 100;
+    let count;
 
     if (width <= 767) {
-      return Math.floor(baseCount / 3);
+      count = Math.floor(baseCount / 3);
     } else if (width <= 1325) {
-      return Math.floor((baseCount * 2) / 3);
+      count = Math.floor((baseCount * 2) / 3);
     } else {
-      return baseCount;
+      count = baseCount;
     }
+
+    return Math.max(count, 30);
   }
 
   initSnowflakes() {
@@ -132,11 +135,20 @@ class Snowfall {
       return segmentWidth * index + this.getRandomInRange(0, segmentWidth);
     }
     if (this.settings.windType === 'left') {
-      return this.getRandomInRange(-this.viewportWidth * 0.5, this.viewportWidth);
+      if ((this.settings.windSpeed >= 50 && this.viewportWidth <= 767) || this.settings.windSpeed >= 100) {
+        return this.getRandomInRange(-this.viewportWidth, this.viewportWidth);
+      } else {
+        return this.getRandomInRange(-this.viewportWidth * 0.5, this.viewportWidth);
+      }
     }
     if (this.settings.windType === 'right') {
-      return this.getRandomInRange(0, this.viewportWidth * 1.5);
+      if ((this.settings.windSpeed >= 50 && this.viewportWidth <= 767) || this.settings.windSpeed >= 100) {
+        return this.getRandomInRange(0, this.viewportWidth * 2);
+      } else {
+        return this.getRandomInRange(0, this.viewportWidth * 1.5);
+      }
     }
+
     return segmentWidth * index + this.getRandomInRange(0, segmentWidth);
   }
 
@@ -227,11 +239,12 @@ class Snowfall {
 
   animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - this.previousTimestamp) / 1000;
-    this.previousTimestamp = currentTimestamp;
 
-    if (deltaTime > 0.1) {
+    if (deltaTime < 0 || deltaTime > 0.1) {
       deltaTime = 0.016;
     }
+
+    this.previousTimestamp = currentTimestamp;
 
     for (const snowflake of this.snowflakes) {
       snowflake.y += snowflake.fallSpeed * deltaTime;

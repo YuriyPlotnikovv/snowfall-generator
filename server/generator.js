@@ -8,7 +8,7 @@ const fsSync = require('fs');
 const GENERATED_DIR = path.resolve(__dirname, '../generated-scripts');
 const LICENSE_PATH = path.resolve(__dirname, 'LICENSE');
 const README_PATH = path.resolve(__dirname, 'README.txt');
-const TEMP_SCRIPT_NAME = 'snowfall.js';
+const TEMP_SCRIPT_NAME = 'snowfall.min.js';
 
 const DEVELOPER_COMMENT = `/*
  * Snowfall script
@@ -20,9 +20,10 @@ const DEVELOPER_COMMENT = `/*
 `;
 
 function getShortFileName(params) {
+  const timestamp = Date.now();
   const json = JSON.stringify(params);
-  const hash = crypto.createHash('sha256').update(json).digest('hex');
-  return `script_${hash}`;
+  const hash = require('crypto').createHash('sha256').update(json).digest('hex').slice(0, 8);
+  return `script_${hash}_${timestamp}`;
 }
 
 function escapeForTemplateLiteral(str) {
@@ -30,7 +31,7 @@ function escapeForTemplateLiteral(str) {
 }
 
 async function generateScript(params) {
-  await fs.mkdir(GENERATED_DIR, { recursive: true });
+  await fs.mkdir(GENERATED_DIR, {recursive: true});
 
   const baseName = getShortFileName(params);
   const zipFileName = `${baseName}.zip`;
@@ -40,7 +41,9 @@ async function generateScript(params) {
   try {
     await fs.access(zipFilePath);
     return zipFilePath;
-  } catch {}
+  }
+  catch {
+  }
 
   let snowflakeSVG = '';
   if (params.customSnowflakeSVG && params.customSnowflakeSVG.trim() !== '') {
@@ -124,13 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const getRandomInRange = (min, max) => min + Math.random() * (max - min);
 
   function getSnowflakeCountByWidth(width) {
+    let count;
     if (width <= 767) {
-      return Math.floor(SNOWFLAKES_COUNT_BASE / 3);
+      count = Math.floor(SNOWFLAKES_COUNT_BASE / 3);
     } else if (width <= 1325) {
-      return Math.floor((SNOWFLAKES_COUNT_BASE * 2) / 3);
+      count = Math.floor((SNOWFLAKES_COUNT_BASE * 2) / 3);
     } else {
-      return SNOWFLAKES_COUNT_BASE;
+      count = SNOWFLAKES_COUNT_BASE;
     }
+
+    return Math.max(count, 30);
   }
 
   function createSnowflakeElement() {
@@ -153,11 +159,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return segmentWidth * index + getRandomInRange(0, segmentWidth);
     }
     if (WIND_TYPE === WIND_TYPE_LEFT) {
-      return getRandomInRange(-viewportWidth * 0.5, viewportWidth);
+      if ((WIND_SPEED >= 50 && viewportWidth <= 767) || WIND_SPEED >= 100) {
+        return getRandomInRange(-viewportWidth, viewportWidth);
+      } else {
+        return getRandomInRange(-viewportWidth * 0.5, viewportWidth);
+      }
     }
+
     if (WIND_TYPE === WIND_TYPE_RIGHT) {
-      return getRandomInRange(0, viewportWidth * 1.5);
+      if ((WIND_SPEED >= 50 && viewportWidth <= 767) || WIND_SPEED >= 100) {
+        return getRandomInRange(0, viewportWidth * 2);
+      } else {
+        return getRandomInRange(0, viewportWidth * 1.5);
+      }
     }
+
     return segmentWidth * index + getRandomInRange(0, segmentWidth);
   }
 
@@ -177,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const opacity = getRandomInRange(SNOWFLAKES_OPACITY_MIN, SNOWFLAKES_OPACITY_MAX);
     const fallSpeed = getRandomInRange(FALL_SPEED_MIN, FALL_SPEED_MAX);
 
-    // Колебания с вероятностью SWAY_PROBABILITY
     let swayAmplitude = 0;
     let swayFrequency = 0;
     let swayPhase = 0;
@@ -195,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (WIND_TYPE === WIND_TYPE_RIGHT) windVelocity = -WIND_SPEED;
     }
 
-    // Вращение с вероятностью ROTATION_PROBABILITY
     let rotationSpeed = 0;
     if (ROTATION_ENABLED && Math.random() < ROTATION_PROBABILITY) {
       rotationSpeed = getRandomInRange(ROTATION_SPEED_MIN, ROTATION_SPEED_MAX) * (Math.random() < 0.5 ? 1 : -1);
@@ -271,9 +285,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - previousTimestamp) / 1000;
-    previousTimestamp = currentTimestamp;
+    if (deltaTime < 0 || deltaTime > 0.1) {
+      deltaTime = 0.016;
+    }
 
-    if (deltaTime > 0.1) deltaTime = 0.016;
+    previousTimestamp = currentTimestamp;
 
     for (const snowflake of snowflakes) {
       snowflake.y += snowflake.fallSpeed * deltaTime;
@@ -338,10 +354,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   await new Promise((resolve, reject) => {
     const output = fsSync.createWriteStream(zipFilePath);
-    const archive = archiver('zip', { zlib: { level: 9 } });
+    const archive = archiver('zip', {zlib: {level: 9}});
 
     output.on('close', () => {
-      fs.unlink(tempScriptPath).catch(() => {});
+      fs.unlink(tempScriptPath).catch(() => {
+      });
       resolve();
     });
 
@@ -349,9 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     archive.pipe(output);
 
-    archive.file(tempScriptPath, { name: TEMP_SCRIPT_NAME });
-    archive.file(LICENSE_PATH, { name: 'LICENSE' });
-    archive.file(README_PATH, { name: 'README.txt' });
+    archive.file(tempScriptPath, {name: TEMP_SCRIPT_NAME});
+    archive.file(LICENSE_PATH, {name: 'LICENSE'});
+    archive.file(README_PATH, {name: 'README.txt'});
 
     archive.finalize();
   });
@@ -359,4 +376,4 @@ document.addEventListener('DOMContentLoaded', () => {
   return zipFilePath;
 }
 
-module.exports = { generateScript };
+module.exports = {generateScript};

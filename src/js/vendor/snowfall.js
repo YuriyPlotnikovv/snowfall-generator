@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Параметры
   const SNOWFLAKE_SVG_PATH = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.988 511.988"><g fill="#4a89dc">...</g></svg>`; // Вставьте сюда полный SVG
-
   const SNOWFLAKES_COUNT_BASE = 100;
   const SNOWFLAKES_SIZE_MIN = 5;
   const SNOWFLAKES_SIZE_MAX = 50;
@@ -67,13 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const getRandomInRange = (min, max) => min + Math.random() * (max - min);
 
   function getSnowflakeCountByWidth(width) {
+    let count;
     if (width <= 767) {
-      return Math.floor(SNOWFLAKES_COUNT_BASE / 3);
+      count = Math.floor(SNOWFLAKES_COUNT_BASE / 3);
     } else if (width <= 1325) {
-      return Math.floor((SNOWFLAKES_COUNT_BASE * 2) / 3);
+      count = Math.floor((SNOWFLAKES_COUNT_BASE * 2) / 3);
     } else {
-      return SNOWFLAKES_COUNT_BASE;
+      count = SNOWFLAKES_COUNT_BASE;
     }
+
+    return Math.max(count, 30);
   }
 
   function createSnowflakeElement() {
@@ -96,11 +99,20 @@ document.addEventListener('DOMContentLoaded', () => {
       return segmentWidth * index + getRandomInRange(0, segmentWidth);
     }
     if (WIND_TYPE === WIND_TYPE_LEFT) {
-      return getRandomInRange(-viewportWidth * 0.5, viewportWidth);
+      if ((WIND_SPEED >= 50 && viewportWidth <= 767) || WIND_SPEED >= 100) {
+        return getRandomInRange(-viewportWidth, viewportWidth);
+      } else {
+        return getRandomInRange(-viewportWidth * 0.5, viewportWidth);
+      }
     }
     if (WIND_TYPE === WIND_TYPE_RIGHT) {
-      return getRandomInRange(0, viewportWidth * 1.5);
+      if ((WIND_SPEED >= 50 && viewportWidth <= 767) || WIND_SPEED >= 100) {
+        return getRandomInRange(0, viewportWidth * 2);
+      } else {
+        return getRandomInRange(0, viewportWidth * 1.5);
+      }
     }
+
     return segmentWidth * index + getRandomInRange(0, segmentWidth);
   }
 
@@ -214,9 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - previousTimestamp) / 1000;
-    previousTimestamp = currentTimestamp;
+    if (deltaTime < 0 || deltaTime > 0.1) {
+      deltaTime = 0.016;
+    }
 
-    if (deltaTime > 0.1) deltaTime = 0.016;
+    previousTimestamp = currentTimestamp;
 
     for (const snowflake of snowflakes) {
       snowflake.y += snowflake.fallSpeed * deltaTime;

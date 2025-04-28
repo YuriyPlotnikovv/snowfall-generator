@@ -4,9 +4,9 @@ Snowfall Script
 Инструкция по установке
 --------
 
-1. Положите скрипт snowfall.js в папку сайта в удобное расположение.
-2. Подключите его в вашем HTML-файле перед закрывающим тегом body:
-   <script src="<путь до скрипта>/snowfall.js"></script>
+1. Поместите файл snowfall.min.js в удобную папку вашего сайта.
+2. Подключите скрипт в HTML-файле перед закрывающим тегом </body>:
+   <script src="<путь до скрипта>/snowfall.min.js"></script>
 3. Обновите страницу и наслаждайтесь падающим снегом!
 
 Лицензия
@@ -26,9 +26,9 @@ Snowfall Script
 Installation Instructions
 --------
 
-1. Place the snowfall.js file into a convenient folder on your website.
-2. Include it in your HTML file before the closing body tag:
-   <script src="<path to script>/snowfall.js"></script>
+1. Place the snowfall.min.js file in a convenient folder on your website.
+2. Include the script in your HTML file before the closing </body> tag:
+   <script src="<path-to-script>/snowfall.min.js"></script>
 3. Refresh the page and enjoy the falling snow!
 
 License

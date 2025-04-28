@@ -110,7 +110,7 @@
                                        v-model="settings.snowflakesType"/>
                                 <span class="form__svg" v-if="settings.customSnowflakeSVG"
                                       v-html="settings.customSnowflakeSVG"></span>
-                                <input class="form__input-file" type="file" accept=".svg" @change="onCustomSVGUpload"/>
+                                <input class="form__input form__input--file" type="file" accept=".svg" @change="onCustomSVGUpload"/>
                             </label>
                         </fieldset>
 
@@ -373,14 +373,14 @@
 
     <footer class="page__footer footer">
         <div class="footer__wrapper">
-            <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-generator" target="_blank"
+            <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-script" target="_blank"
                rel="noopener noreferrer"
-               title="GitHub - YuriyPlotnikovv/snowfall-generator">
+               title="GitHub - YuriyPlotnikovv/snowfall-script">
                 <svg class="footer__info-icon" xmlns="http://www.w3.org/2000/svg">
                     <use xlink:href="/public/img/sprite.svg#icon-github"/>
                 </svg>
 
-                <span class="footer__info-text">Проект на GitHub</span>
+                <span class="footer__info-text">Код снегопада на GitHub</span>
             </a>
 
             <a class="footer__info link" href="https://yuriyplotnikovv.ru/" target="_blank" rel="noopener noreferrer"

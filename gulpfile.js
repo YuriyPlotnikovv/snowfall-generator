@@ -41,7 +41,7 @@ const paths = {
     watch: 'src/js/modules/**/*.js'
   },
   images: {
-    src: ['src/img/**/*.{jpg,jpeg,png,svg}', '!src/img/svg/**/*'],
+    src: ['src/img/**/*.{jpg,jpeg,png,svg}', '!src/img/og-image.png', '!src/img/svg/**/*'],
     dest: 'public/img',
     watch: 'src/img/**/*.{jpg,jpeg,png,svg}'
   },
@@ -59,6 +59,7 @@ const paths = {
       'src/css/vendor/*.css',
       'src/fonts/*.{woff,woff2,ttf}',
       'src/img/*.gif',
+      'src/img/og-image.png',
     ],
     dest: 'public/'
   },
