@@ -45,6 +45,7 @@ app.post('/generate-script', async (req, res) => {
 app.post('/delete-generated-script', async (req, res) => {
   try {
     const { generatedScriptUrl } = req.body;
+    console.log(`FILE: ${generatedScriptUrl}`);
     if (!generatedScriptUrl) {
       return res.status(400).json({ error: 'generatedScriptUrl is required' });
     }
