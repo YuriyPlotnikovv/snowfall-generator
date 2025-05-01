@@ -52,13 +52,13 @@
 
 ---
 
-## Лицензия
+## License
 
 This project is licensed under the [GNU Affero General Public License v3 (AGPLv3)](https://www.gnu.org/licenses/agpl-3.0.html).
 
 ---
 
-## Контакты
+## Contacts
 
 Author: Yuriy Plotnikov  
 Website: https://yuriyplotnikovv.ru  

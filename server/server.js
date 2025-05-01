@@ -41,6 +41,29 @@ app.post('/generate-script', async (req, res) => {
   }
 });
 
+
+app.post('/delete-generated-script', async (req, res) => {
+  try {
+    const { generatedScriptUrl } = req.body;
+    if (!generatedScriptUrl) {
+      return res.status(400).json({ error: 'generatedScriptUrl is required' });
+    }
+
+    const absolutePath = path.resolve(STATIC_FILES_ROOT, '.' + generatedScriptUrl);
+    if (!absolutePath.startsWith(path.resolve(STATIC_FILES_ROOT))) {
+      return res.status(400).json({ error: 'Invalid file path' });
+    }
+
+    await fs.unlink(absolutePath);
+
+    res.json({ message: 'File deleted successfully' });
+  }
+  catch (error) {
+    console.error('File deletion error:', error);
+    res.status(500).json({ error: 'File deletion error' });
+  }
+});
+
 http.createServer(app).listen(SERVER_PORT, () => {
   console.log(`HTTP server running at http://localhost:${SERVER_PORT}`);
 });

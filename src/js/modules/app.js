@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
           snowflakesSVG: this.snowflakesSVG
         };
 
-        fetch('https://snowfall-generator.ru/generate-script', {
+        fetch('/generate-script', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -146,13 +146,38 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
       },
       createNewScript() {
-        deleteCookie('isGenerated');
-        deleteCookie('generatedScriptUrl');
-        this.isGenerated = false;
-        this.generatedScriptUrl = '';
-        this.isSettings = true;
+        this.isLoading = true;
 
-        this.settings = {...JSON.parse(JSON.stringify(defaultSettings))};
+        const params = {
+          generatedScriptUrl: this.generatedScriptUrl
+        };
+
+        fetch('/delete-generated-script', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        })
+          .then(async response => {
+            if (!response.ok) {
+              throw new Error('Ошибка сервера при удалении скрипта');
+            }
+            deleteCookie('isGenerated');
+            deleteCookie('generatedScriptUrl');
+            this.isGenerated = false;
+            this.generatedScriptUrl = '';
+            this.isSettings = true;
+
+            this.settings = {...JSON.parse(JSON.stringify(defaultSettings))};
+
+            this.isLoading = false;
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Ошибка при удалении скрипта');
+            this.isLoading = false;
+          });
       },
     }
   });
