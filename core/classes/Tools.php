@@ -109,7 +109,7 @@ class Tools
         return implode("\n", $metaTags) . "\n";
     }
 
-    public static function getSchemaOrgTags(string $name, string $description,): string {
+    public static function getSchemaOrgTags(string $name, string $description): string {
         $currentUrl = htmlspecialchars(self::getCurrentUrl(), ENT_QUOTES, 'UTF-8');
 
         $data = [
