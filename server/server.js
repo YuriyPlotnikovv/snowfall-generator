@@ -45,7 +45,7 @@ app.post('/generate-script', async (req, res) => {
 app.post('/delete-generated-script', async (req, res) => {
   try {
     const { generatedScriptUrl } = req.body;
-    console.log(`FILE: ${generatedScriptUrl}`);
+
     if (!generatedScriptUrl) {
       return res.status(400).json({ error: 'generatedScriptUrl is required' });
     }
@@ -55,9 +55,13 @@ app.post('/delete-generated-script', async (req, res) => {
       return res.status(400).json({ error: 'Invalid file path' });
     }
 
-    await fs.unlink(absolutePath);
-
-    res.json({ message: 'File deleted successfully' });
+    fs.unlink(absolutePath, (err) => {
+      if (err) {
+        console.error('File deletion error:', err);
+        return res.status(500).json({ error: 'File deletion error' });
+      }
+      res.json({ message: 'File deleted successfully' });
+    });
   }
   catch (error) {
     console.error('File deletion error:', error);
