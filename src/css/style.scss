@@ -1,11 +1,13 @@
 @use "./global/fonts";
 @use "./global/variables";
 @use "./global/settings";
+@use "./global/animations";
 
 @use "./blocks/button";
 @use "./blocks/footer";
 @use "./blocks/form";
 @use "./blocks/header";
 @use "./blocks/link";
+@use "./blocks/not-found";
 @use "./blocks/page";
 @use "./blocks/vue-transitions";

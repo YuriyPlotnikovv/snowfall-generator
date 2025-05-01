@@ -28,7 +28,8 @@ const paths = {
     global: [
       './global/fonts',
       './global/variables',
-      './global/settings'
+      './global/settings',
+      './global/animations'
     ],
     blocks: 'src/css/blocks',
     src: 'src/css/style.scss',

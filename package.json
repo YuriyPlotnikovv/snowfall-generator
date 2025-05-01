@@ -1,6 +1,6 @@
 {
     "name": "snow-generator",
-    "version": "1.0.0",
+    "version": "1.4.0",
     "description": "Сайт для генерации скрипта снегопада на сайт",
     "main": "index.html",
     "author": "Yuriy Plotnikov",

@@ -283,6 +283,7 @@ class Snowfall {
   updateSettings(newSettings) {
     const prevType = this.settings.snowflakesType;
     const prevCount = this.settings.snowflakesCount;
+    const prevCustomSVG = this.settings.customSnowflakeSVG;
 
     this.settings = Object.assign({}, this.settings, newSettings);
 
@@ -290,8 +291,11 @@ class Snowfall {
 
     const typeChanged = prevType !== this.settings.snowflakesType;
     const countChanged = prevCount !== this.settings.snowflakesCount;
+    const svgChanged = (this.settings.snowflakesType === 'custom')
+      ? prevCustomSVG !== this.settings.customSnowflakeSVG
+      : this.settings.snowflakesSVG[prevType] !== (this.settings.snowflakesSVG[this.settings.snowflakesType] || '');
 
-    if (typeChanged || countChanged) {
+    if (typeChanged || countChanged || svgChanged) {
       cancelAnimationFrame(this.animationFrameId);
       this.initSnowflakes();
       this.previousTimestamp = performance.now();

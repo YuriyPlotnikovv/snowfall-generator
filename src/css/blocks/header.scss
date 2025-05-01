@@ -23,7 +23,7 @@
     }
   }
 
-  &__logo {
+  &__logo-link {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,6 +54,23 @@
     }
     @media (max-width: var.$mobile-mid-width) {
       display: none;
+    }
+  }
+
+  &__lang-switcher {
+    display: block;
+
+    font-size: 20px;
+    color: var.$colorBlackTwo;
+
+    transition: all 0.4s ease-in-out;
+
+    &:hover, &:active {
+      opacity: 0.6;
+    }
+
+    @media (max-width: var.$desktop-mid-width) {
+      font-size: 18px;
     }
   }
 }

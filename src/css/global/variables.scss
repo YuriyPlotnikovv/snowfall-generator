@@ -29,3 +29,7 @@ $colorRed: #ff2e17;
 $boxShadowSection: inset 0 3px 4px 0 rgba(0, 0, 0, 0.1);
 $boxShadowCard: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
 $boxShadowCardHover: 0 4px 8px 0px rgba(0, 0, 0, 0.1);
+$boxShadowWindow: -3px -3px 0px 5px rgba(212, 212, 212, 1), 5px 5px 0px 2px $colorWhite;
+
+/* gradients */
+$windowGradient: linear-gradient(310deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 107, 1) 0%, rgba(0, 0, 0, 1) 80%);

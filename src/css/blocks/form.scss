@@ -80,6 +80,7 @@
   }
 
   &__svg {
+    flex-shrink: 0;
     width: 60px;
     height: 60px;
 
@@ -134,10 +135,7 @@
     }
 
     &--file {
-      max-width: calc(100vw - 86px);
-
-      text-align: center;
-      text-wrap: auto;
+      display: none;
     }
   }
 }

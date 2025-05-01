@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const messages = {
+    ru: {
+      invalidSVG: 'Пожалуйста, загрузите корректный SVG-файл',
+      readError: 'Ошибка при чтении файла',
+      serverErrorGenerate: 'Ошибка сервера при генерации скрипта',
+      serverErrorDelete: 'Ошибка сервера при удалении скрипта',
+      noFileToDownload: 'Файл для скачивания отсутствует',
+      errorDeleteScript: 'Ошибка при удалении скрипта',
+    },
+    en: {
+      invalidSVG: 'Please upload a valid SVG file',
+      readError: 'Error reading file',
+      serverErrorGenerate: 'Server error during script generation',
+      serverErrorDelete: 'Server error during script deletion',
+      noFileToDownload: 'No file available for download',
+      errorDeleteScript: 'Error deleting script',
+    }
+  };
+
   const defaultSettings = {
     snowflakesType: '',
     customSnowflakeSVG: '',
@@ -15,6 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     rotationEnabled: false,
     rotationSpeed: [10, 40],
   };
+
+  const htmlLang = document.documentElement.lang || 'ru';
+  const currentLang = messages[htmlLang] ? htmlLang : 'ru';
+
+  function getMessage(key) {
+    return messages[currentLang][key] || messages.en[key] || key;
+  }
 
   const snowflakeKeys = Object.keys(snowflakesSVG);
   if (snowflakeKeys.length > 0) {
@@ -38,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       generatedScriptUrl: getCookie('generatedScriptUrl') || '',
       settings: JSON.parse(JSON.stringify(defaultSettings)),
       snowflakesSVG,
+      selectedFileName: '',
       ranges: {
         snowflakesCount: {min: 30, max: 200},
         snowflakesSize: {min: 5, max: 150},
@@ -84,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
           .then(async response => {
             if (!response.ok) {
-              throw new Error('Ошибка сервера при генерации скрипта');
+              throw new Error(getMessage('serverErrorGenerate'));
             }
             const data = await response.json();
 
@@ -94,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
           })
           .catch(err => {
             console.error(err);
-            alert('Ошибка при генерации скрипта');
+            alert(getMessage('serverErrorGenerate'));
             this.isLoading = false;
           });
       },
@@ -102,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = event.target.files[0];
         if (!file) return;
 
+        this.selectedFileName = this.sliceFileName(file.name, 20);
         const reader = new FileReader();
 
         reader.onload = e => {
@@ -121,19 +149,33 @@ document.addEventListener('DOMContentLoaded', () => {
             this.settings.customSnowflakeSVG = text;
             this.settings.snowflakesType = 'custom';
           } else {
-            alert('Пожалуйста, загрузите корректный SVG-файл');
+            alert(getMessage('invalidSVG'));
           }
         };
 
         reader.onerror = () => {
-          alert('Ошибка при чтении файла');
+          alert(getMessage('readError'));
         };
 
         reader.readAsText(file);
       },
+      sliceFileName(name, maxLength = 20) {
+        if (!name) return '';
+        if (name.length <= maxLength) return name;
+
+        const extIndex = name.lastIndexOf('.');
+        const extension = extIndex !== -1 ? name.slice(extIndex) : '';
+        const baseName = extIndex !== -1 ? name.slice(0, extIndex) : name;
+
+        const charsToShow = maxLength - extension.length - 3;
+        const frontChars = Math.ceil(charsToShow / 2);
+        const backChars = Math.floor(charsToShow / 2);
+
+        return baseName.slice(0, frontChars) + '...' + baseName.slice(baseName.length - backChars) + extension;
+      },
       downloadScript() {
         if (!this.generatedScriptUrl) {
-          alert('Файл для скачивания отсутствует');
+          alert(getMessage('noFileToDownload'));
           return;
         }
 
@@ -161,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
           .then(async response => {
             if (!response.ok) {
-              throw new Error('Ошибка сервера при удалении скрипта');
+              throw new Error(getMessage('serverErrorDelete'));
             }
             deleteCookie('isGenerated');
             deleteCookie('generatedScriptUrl');
@@ -175,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
           })
           .catch(err => {
             console.error(err);
-            alert('Ошибка при удалении скрипта');
+            alert(getMessage('errorDeleteScript'));
             this.isLoading = false;
           });
       },
