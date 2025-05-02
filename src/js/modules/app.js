@@ -138,13 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             this.generatedScriptUrl = data.scriptUrl;
-            this.isGenerated = true;
             this.isLoading = false;
+
+            setTimeout(() => {
+              this.isGenerated = true;
+            }, 300);
           })
           .catch(err => {
             console.error(err);
-            alert(getMessage('serverErrorGenerate'));
             this.isLoading = false;
+            alert(getMessage('serverErrorGenerate'));
           });
       },
       onCustomSVGUpload(event) {
@@ -230,14 +233,19 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteCookie('generatedScriptUrl');
             this.isGenerated = false;
             this.generatedScriptUrl = '';
-            this.isSettings = true;
+            this.customSnowflakeSVG = '';
+            this.selectedFileName = '';
             this.settings = {...JSON.parse(JSON.stringify(defaultSettings))};
             this.isLoading = false;
+
+            setTimeout(() => {
+              this.isSettings = true;
+            }, 500);
           })
           .catch(err => {
             console.error(err);
-            alert(getMessage('errorDeleteScript'));
             this.isLoading = false;
+            alert(getMessage('errorDeleteScript'));
           });
       },
     }
