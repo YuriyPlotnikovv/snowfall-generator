@@ -166,7 +166,7 @@ class Snowfall {
     let swayFrequency = 0;
     let swayPhase = 0;
 
-    if (this.settings.swayEnabled && Math.random() < 0.5) { // 50% снежинок колеблются
+    if (this.settings.swayEnabled && Math.random() < 0.5) {
       swayAmplitude = this.getRandomInRange(this.settings.swayAmplitude[0], this.settings.swayAmplitude[1]);
       swayFrequency = this.getRandomInRange(this.settings.swayFrequency[0], this.settings.swayFrequency[1]);
       swayPhase = Math.random() * 2 * Math.PI;
@@ -188,6 +188,7 @@ class Snowfall {
 
     const initialX = this.generateInitialX(index, segmentWidth);
     const initialY = this.getRandomInRange(0, this.viewportHeight);
+    const segmentOffset = (initialX - segmentWidth * index) / segmentWidth;
 
     const svgElement = this.createSnowflakeElement();
     wrapper.style.width = size + 'px';
@@ -212,6 +213,7 @@ class Snowfall {
       rotationAngle: Math.random() * 360,
       initialX,
       segmentIndex: index,
+      segmentOffset: segmentOffset,
       segmentWidth,
     };
   }
@@ -234,7 +236,7 @@ class Snowfall {
 
     for (const snowflake of this.snowflakes) {
       snowflake.segmentWidth = segmentWidth;
-      snowflake.initialX = this.generateInitialX(snowflake.segmentIndex, segmentWidth);
+      snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
       snowflake.x = snowflake.initialX;
 
       if (snowflake.y > this.viewportHeight) {

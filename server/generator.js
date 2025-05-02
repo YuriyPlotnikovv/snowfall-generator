@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initialX = generateInitialX(index, segmentWidth);
     const initialY = getRandomInRange(0, viewportHeight);
+    const segmentOffset = (initialX - segmentWidth * index) / segmentWidth;
 
     const svgElement = createSnowflakeElement();
 
@@ -207,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rotationAngle: Math.random() * 360,
       initialX,
       segmentIndex: index,
+      segmentOffset: segmentOffset,
       segmentWidth,
     };
   }
@@ -228,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (const snowflake of snowflakes) {
       snowflake.segmentWidth = segmentWidth;
-      snowflake.initialX = generateInitialX(snowflake.segmentIndex, segmentWidth);
+      snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
       snowflake.x = snowflake.initialX;
 
       if (snowflake.y > viewportHeight) {
