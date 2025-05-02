@@ -50,8 +50,8 @@ li {
 
 a {
   text-decoration: none;
-  user-select: none;
   color: inherit;
+  user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -119,8 +119,8 @@ button {
 }
 
 label:has(+ .required)::after {
-  content: " *";
   color: var.$colorRed;
+  content: " *";
 }
 
 textarea {

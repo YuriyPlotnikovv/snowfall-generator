@@ -4,13 +4,7 @@
     "description": "Сайт для генерации скрипта снегопада на сайт",
     "main": "index.html",
     "author": "Yuriy Plotnikov",
-    "license": "UNLICENSED",
-    "dependencies": {
-        "cors": "^2.8.5",
-        "express": "^4.18.2",
-        "javascript-obfuscator": "^4.0.2",
-        "archiver": "^5.3.1"
-    },
+    "license": "GNU AGPLv3",
     "devDependencies": {
         "@babel/core": "^7.26.9",
         "@babel/preset-env": "^7.26.9",
