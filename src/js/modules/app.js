@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
           alert(getMessage('noFileToDownload'));
           return;
         }
-
+        console.log(this.generatedScriptUrl);
         const link = document.createElement('a');
         link.href = this.generatedScriptUrl;
         link.download = 'snowfall.zip';
