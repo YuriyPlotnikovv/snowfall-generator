@@ -6,7 +6,7 @@ global $MESS;
 
 <footer class="page__footer footer">
     <div class="footer__wrapper">
-        <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-script" target="_blank"
+        <a class="footer__info link" href="https://github.com/YuriyPlotnikovv/snowfall-generator" target="_blank"
            rel="noopener noreferrer"
            title="<?= $MESS['FOOTER_GITHUB'] ?>">
             <svg class="footer__info-icon" xmlns="http://www.w3.org/2000/svg">

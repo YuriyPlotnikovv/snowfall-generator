@@ -3,7 +3,7 @@ return [
     'MAIN' => 'Main page',
     'PAGE_TITLE' => 'Online Snowfall Generator — Create a Snow Effect for Your Website',
     'PAGE_DESCRIPTION' => 'Free online snowfall generator. Create a unique falling snowflake effect for your website in just a few clicks.',
-    'PAGE_KEYWORDS' => 'snowfall generator, snowfall for website, online snowflakes, snow effect',
+    'PAGE_KEYWORDS' => 'snowfall generator, snowfall on website, online snowflakes, snow effect, falling snow, snow on website, snow script, snowfall script',
     'LOGO_TEXT' => 'Snowfall Generator',
     'MAIN_TITLE' => 'Online Snowfall Generator for Your Website',
     'WELCOME_TITLE' => 'Welcome!',
@@ -38,7 +38,7 @@ return [
     'RESULT_TEXT' => 'Download the script to embed on your website and include it before the closing <i>body</i> tag',
     'BUTTON_DOWNLOAD' => 'Download',
     'BUTTON_RESET' => 'Create New',
-    'FOOTER_GITHUB' => 'Snowfall Code on GitHub',
+    'FOOTER_GITHUB' => 'Project on GitHub',
     'FOOTER_AUTHOR' => 'YuriyPlotnikovv',
     'NOT_FOUND' => 'The page you are looking for has been lost in space.',
 ];
