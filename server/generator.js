@@ -230,7 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (const snowflake of snowflakes) {
       snowflake.segmentWidth = segmentWidth;
-      snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
+
+      const newInitialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
+      const offsetFromInitial = snowflake.x - snowflake.initialX;
+      snowflake.initialX = newInitialX;
+      snowflake.x = snowflake.initialX + offsetFromInitial;
 
       if (snowflake.y > viewportHeight) {
         snowflake.y = -snowflake.size;
