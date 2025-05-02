@@ -1,26 +1,4 @@
 class Snowfall {
-  handleResize = (() => {
-    let timeout;
-    return () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        this.viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-        this.viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-
-        const newCount = this.getSnowflakeCountByWidth(this.viewportWidth);
-        if (newCount !== this.snowflakeCount) {
-          this.snowflakeCount = newCount;
-          cancelAnimationFrame(this.animationFrameId);
-          this.initSnowflakes();
-          this.previousTimestamp = performance.now();
-          this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));
-        } else {
-          this.updateSegments();
-        }
-      }, 100);
-    };
-  })();
-
   constructor(containerId, initialSettings) {
     this.containerId = containerId;
     this.settings = initialSettings;
@@ -206,6 +184,7 @@ class Snowfall {
       opacity,
       fallSpeed,
       windVelocity,
+      windOffset: 0,
       swayAmplitude,
       swayFrequency,
       swayPhase,
@@ -237,10 +216,8 @@ class Snowfall {
     for (const snowflake of this.snowflakes) {
       snowflake.segmentWidth = segmentWidth;
 
-      const newInitialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
-      const offsetFromInitial = snowflake.x - snowflake.initialX;
-      snowflake.initialX = newInitialX;
-      snowflake.x = snowflake.initialX + offsetFromInitial;
+      snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
+      snowflake.x = snowflake.initialX + snowflake.windOffset;
 
       if (snowflake.y > this.viewportHeight) {
         snowflake.y = -snowflake.size;
@@ -267,8 +244,8 @@ class Snowfall {
       if (!this.settings.windEnabled) {
         snowflake.x = snowflake.initialX + swayOffset;
       } else {
-        snowflake.initialX += snowflake.windVelocity * deltaTime;
-        snowflake.x = snowflake.initialX + swayOffset;
+        snowflake.windOffset += snowflake.windVelocity * deltaTime;
+        snowflake.x = snowflake.initialX + snowflake.windOffset + swayOffset;
       }
 
       if (this.settings.rotationEnabled && snowflake.rotationSpeed !== 0) {
@@ -278,6 +255,7 @@ class Snowfall {
       if (snowflake.y > this.viewportHeight) {
         snowflake.y = -snowflake.size;
         snowflake.initialX = this.generateInitialX(snowflake.segmentIndex, snowflake.segmentWidth);
+        snowflake.windOffset = 0;
         snowflake.x = snowflake.initialX;
         snowflake.swayPhase = Math.random() * 2 * Math.PI;
         snowflake.rotationAngle = this.settings.rotationEnabled ? Math.random() * 360 : 0;
@@ -289,6 +267,28 @@ class Snowfall {
 
     this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));
   }
+
+  handleResize = (() => {
+    let timeout;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        this.viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        this.viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+        const newCount = this.getSnowflakeCountByWidth(this.viewportWidth);
+        if (newCount !== this.snowflakeCount) {
+          this.snowflakeCount = newCount;
+          cancelAnimationFrame(this.animationFrameId);
+          this.initSnowflakes();
+          this.previousTimestamp = performance.now();
+          this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));
+        } else {
+          this.updateSegments();
+        }
+      }, 100);
+    };
+  })();
 
   updateSettings(newSettings) {
     const prevType = this.settings.snowflakesType;
