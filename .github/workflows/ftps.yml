@@ -41,7 +41,7 @@ jobs:
             - name: SFTP Deploy
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
               with:
-                  server: snowfall-generator.beget.tech
+                  server: yuriypvh.beget.tech
                   username: ${{ secrets.SSH_USER }}
                   password: ${{ secrets.SSH_PASSWORD }}
                   protocol: ftps
