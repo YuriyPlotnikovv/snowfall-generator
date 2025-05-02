@@ -31,18 +31,18 @@ global $MESS;
                 <fieldset class="form__fieldset form__fieldset--row" id="snowflake-type">
                     <legend class="form__legend"><?= $MESS['FIELDSET_SNOWFLAKE_TYPE'] ?></legend>
 
-                    <label class="form__label form__label--radio" v-for="(svg, key) in snowflakesSVG"
+                    <label class="form__label form__label--radio" v-for="(svg, key) in snowflakesSVGList"
                            :key="key">
                         <input class="form__input" type="radio" name="snowflakes-type" :value="key"
-                               v-model="settings.snowflakesType"/>
+                               v-model="settings.snowflakeType"/>
                         <span class="form__svg" v-html="svg"></span>
                     </label>
 
                     <label class="form__label form__label--radio">
                         <input class="form__input" type="radio" name="snowflakes-type" value="custom"
-                               v-model="settings.snowflakesType"/>
-                        <span class="form__svg" v-if="settings.customSnowflakeSVG"
-                              v-html="settings.customSnowflakeSVG"></span>
+                               v-model="settings.snowflakeType"/>
+                        <span class="form__svg" v-if="customSnowflakeSVG"
+                              v-html="customSnowflakeSVG"></span>
                         <input class="form__input form__input--file" type="file" accept=".svg"
                                @change="onCustomSVGUpload" ref="fileInput"/>
                         <button type="button" class="button button--default"

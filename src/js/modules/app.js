@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const messages = {
     ru: {
+      invalidConfig: 'Ошибка загрузки конфигурации:',
       invalidSVG: 'Пожалуйста, загрузите корректный SVG-файл',
       readError: 'Ошибка при чтении файла',
       serverErrorGenerate: 'Ошибка сервера при генерации скрипта',
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       errorDeleteScript: 'Ошибка при удалении скрипта',
     },
     en: {
+      invalidConfig: 'Error loading config:',
       invalidSVG: 'Please upload a valid SVG file',
       readError: 'Error reading file',
       serverErrorGenerate: 'Server error during script generation',
@@ -19,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const defaultSettings = {
-    snowflakesType: '',
-    customSnowflakeSVG: '',
+    snowflakeSVG: '',
+    snowflakeType: '',
     snowflakesCount: 50,
     snowflakesSize: [5, 50],
     snowflakesVisibility: [0.1, 1],
@@ -38,19 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const htmlLang = document.documentElement.lang || 'ru';
   const currentLang = messages[htmlLang] ? htmlLang : 'ru';
 
-  function getMessage(key) {
-    return messages[currentLang][key] || messages.en[key] || key;
-  }
-
-  const snowflakeKeys = Object.keys(snowflakesSVG);
-  if (snowflakeKeys.length > 0) {
-    defaultSettings.snowflakesType = snowflakeKeys[0];
+  const snowflakesEntries = Object.entries(snowflakesSVGList);
+  if (snowflakesEntries.length > 0) {
+    const [key, value] = snowflakesEntries[0];
+    defaultSettings.snowflakeType = key;
+    defaultSettings.snowflakeSVG = value;
   }
 
   const snowfall = new Snowfall('snow-container', {
-    snowflakesSVG,
     ...JSON.parse(JSON.stringify(defaultSettings))
   });
+
+  function getMessage(key) {
+    return messages[currentLang][key] || messages.en[key] || key;
+  }
 
   new Vue({
     el: '#app',
@@ -58,12 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
       'vue-slider': window['vue-slider-component']
     },
     data: {
+      apiBaseUrl: '',
       isSettings: false,
       isLoading: false,
       isGenerated: getCookie('isGenerated') === 'true',
       generatedScriptUrl: getCookie('generatedScriptUrl') || '',
       settings: JSON.parse(JSON.stringify(defaultSettings)),
-      snowflakesSVG,
+      snowflakesSVGList,
+      customSnowflakeSVG: '',
       selectedFileName: '',
       ranges: {
         snowflakesCount: {min: 30, max: 200},
@@ -76,7 +81,29 @@ document.addEventListener('DOMContentLoaded', () => {
         rotationSpeed: {min: 10, max: 100},
       },
     },
+    created() {
+      fetch('/config.json')
+        .then(response => response.json())
+        .then(config => {
+          this.apiBaseUrl = config.apiBaseUrl;
+        })
+        .catch(error => {
+          console.error(getMessage('invalidConfig'), error);
+        });
+    },
     watch: {
+      customSnowflakeSVG(newSVG) {
+        if (this.settings.snowflakeType === 'custom') {
+          this.settings.snowflakeSVG = newSVG || '';
+        }
+      },
+      'settings.snowflakeType'(newType) {
+        if (newType !== 'custom') {
+          this.settings.snowflakeSVG = this.snowflakesSVGList[newType] || '';
+        } else {
+          this.settings.snowflakeSVG = this.customSnowflakeSVG || '';
+        }
+      },
       settings: {
         handler(newSettings) {
           snowfall.updateSettings(newSettings);
@@ -97,17 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
       submitSettings() {
         this.isLoading = true;
 
-        const params = {
-          ...this.settings,
-          snowflakesSVG: this.snowflakesSVG
-        };
-
-        fetch('/generate-script', {
+        fetch(`${this.apiBaseUrl}/generate-script`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(params)
+          body: JSON.stringify(this.settings)
         })
           .then(async response => {
             if (!response.ok) {
@@ -146,8 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const serializer = new XMLSerializer();
             text = serializer.serializeToString(svg);
 
-            this.settings.customSnowflakeSVG = text;
-            this.settings.snowflakesType = 'custom';
+            this.customSnowflakeSVG = text;
+            this.settings.snowflakeType = 'custom';
           } else {
             alert(getMessage('invalidSVG'));
           }
@@ -194,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
           generatedScriptUrl: this.generatedScriptUrl
         };
 
-        fetch('/delete-generated-script', {
+        fetch(`${this.apiBaseUrl}/delete-generated-script`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -210,9 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.isGenerated = false;
             this.generatedScriptUrl = '';
             this.isSettings = true;
-
             this.settings = {...JSON.parse(JSON.stringify(defaultSettings))};
-
             this.isLoading = false;
           })
           .catch(err => {

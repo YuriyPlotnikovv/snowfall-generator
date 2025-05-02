@@ -81,9 +81,7 @@ class Snowfall {
 
   createSnowflakeElement() {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = (this.settings.snowflakesType === 'custom' && this.settings.customSnowflakeSVG)
-      ? this.settings.customSnowflakeSVG
-      : this.settings.snowflakesSVG[this.settings.snowflakesType] || '';
+    wrapper.innerHTML = this.settings.snowflakeSVG;
 
     const svgElement = wrapper.firstChild;
 
@@ -308,19 +306,17 @@ class Snowfall {
   })();
 
   updateSettings(newSettings) {
-    const prevType = this.settings.snowflakesType;
+    const prevType = this.settings.snowflakeType;
     const prevCount = this.settings.snowflakesCount;
-    const prevCustomSVG = this.settings.customSnowflakeSVG;
+    const prevSVG = this.settings.snowflakeSVG;
 
     this.settings = Object.assign({}, this.settings, newSettings);
 
     this.snowflakeCount = this.getSnowflakeCountByWidth(this.viewportWidth);
 
-    const typeChanged = prevType !== this.settings.snowflakesType;
+    const typeChanged = prevType !== this.settings.snowflakeType;
     const countChanged = prevCount !== this.settings.snowflakesCount;
-    const svgChanged = (this.settings.snowflakesType === 'custom')
-      ? prevCustomSVG !== this.settings.customSnowflakeSVG
-      : this.settings.snowflakesSVG[prevType] !== (this.settings.snowflakesSVG[this.settings.snowflakesType] || '');
+    const svgChanged = prevSVG !== this.settings.snowflakeSVG
 
     if (typeChanged || countChanged || svgChanged) {
       cancelAnimationFrame(this.animationFrameId);

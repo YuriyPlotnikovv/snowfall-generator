@@ -179,7 +179,7 @@ function generateSnowflakesSVGModule(done) {
       const entries = Object.entries(svgData).map(([key, svg]) => `  "${key}": \`${svg}\``);
       const fileContent =
         `// Этот файл сгенерирован автоматически
-window.snowflakesSVG = {
+window.snowflakesSVGList = {
 ${entries.join(',\n')}
 };
 `;
