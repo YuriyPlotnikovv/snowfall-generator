@@ -201,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity,
       fallSpeed,
       windVelocity,
-      windOffset: 0,
       swayAmplitude,
       swayFrequency,
       swayPhase,
@@ -232,8 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const snowflake of snowflakes) {
       snowflake.segmentWidth = segmentWidth;
 
-      snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
-      snowflake.x = snowflake.initialX + snowflake.windOffset;
+      const newInitialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
+      const offsetFromInitial = snowflake.x - snowflake.initialX;
+      snowflake.initialX = newInitialX;
+      snowflake.x = snowflake.initialX + offsetFromInitial;
 
       if (snowflake.y > viewportHeight) {
         snowflake.y = -snowflake.size;
@@ -260,8 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!WIND_ENABLED) {
         snowflake.x = snowflake.initialX + swayOffset;
       } else {
-        snowflake.windOffset += snowflake.windVelocity * deltaTime;
-        snowflake.x = snowflake.initialX + snowflake.windOffset + swayOffset;
+        snowflake.initialX += snowflake.windVelocity * deltaTime;
+        snowflake.x = snowflake.initialX + swayOffset;
       }
 
       if (ROTATION_ENABLED && snowflake.rotationSpeed !== 0) {
@@ -271,7 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (snowflake.y > viewportHeight) {
         snowflake.y = -snowflake.size;
         snowflake.initialX = generateInitialX(snowflake.segmentIndex, snowflake.segmentWidth);
-        snowflake.windOffset = 0;
         snowflake.x = snowflake.initialX;
         snowflake.swayPhase = Math.random() * 2 * Math.PI;
         snowflake.rotationAngle = ROTATION_ENABLED ? Math.random() * 360 : 0;
@@ -287,18 +287,33 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleResize() {
     clearTimeout(handleResize.timeout);
     handleResize.timeout = setTimeout(() => {
-      viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-      viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      const newViewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+      const newViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
-      const newCount = getSnowflakeCountByWidth(viewportWidth);
-      if (newCount !== snowflakeCount) {
-        snowflakeCount = newCount;
-        cancelAnimationFrame(animationFrameId);
-        initSnowflakes();
-        previousTimestamp = performance.now();
-        animationFrameId = requestAnimationFrame(animationStep);
-      } else {
-        updateSegments();
+      const widthChanged = newViewportWidth !== previousViewportWidth;
+      const heightChanged = newViewportHeight !== viewportHeight;
+      viewportHeight = newViewportHeight;
+
+      if (widthChanged) {
+        viewportWidth = newViewportWidth;
+        previousViewportWidth = newViewportWidth;
+
+        const newCount = getSnowflakeCountByWidth(viewportWidth);
+        if (newCount !== snowflakeCount) {
+          snowflakeCount = newCount;
+          cancelAnimationFrame(animationFrameId);
+          initSnowflakes();
+          previousTimestamp = performance.now();
+          animationFrameId = requestAnimationFrame(animationStep);
+        } else {
+          updateSegments();
+        }
+      } else if (heightChanged) {
+        for (const snowflake of snowflakes) {
+          if (snowflake.y > viewportHeight) {
+            snowflake.y = -snowflake.size;
+          }
+        }
       }
     }, 100);
   }
@@ -339,9 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
   let viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-  let snowflakeCount = getSnowflakeCountByWidth(viewportWidth);
+  let previousViewportWidth = viewportWidth;
   let snowflakes = [];
   let previousTimestamp = performance.now();
+  let snowflakeCount = getSnowflakeCountByWidth(viewportWidth);
   let animationFrameId;
 
   initSnowflakes();
