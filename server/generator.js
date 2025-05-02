@@ -231,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const snowflake of snowflakes) {
       snowflake.segmentWidth = segmentWidth;
       snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
-      snowflake.x = snowflake.initialX;
 
       if (snowflake.y > viewportHeight) {
         snowflake.y = -snowflake.size;
@@ -258,8 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!WIND_ENABLED) {
         snowflake.x = snowflake.initialX + swayOffset;
       } else {
-        snowflake.x = snowflake.initialX + snowflake.windVelocity * deltaTime + swayOffset;
         snowflake.initialX += snowflake.windVelocity * deltaTime;
+        snowflake.x = snowflake.initialX + swayOffset;
       }
 
       if (ROTATION_ENABLED && snowflake.rotationSpeed !== 0) {

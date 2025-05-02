@@ -237,7 +237,6 @@ class Snowfall {
     for (const snowflake of this.snowflakes) {
       snowflake.segmentWidth = segmentWidth;
       snowflake.initialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
-      snowflake.x = snowflake.initialX;
 
       if (snowflake.y > this.viewportHeight) {
         snowflake.y = -snowflake.size;
@@ -264,8 +263,8 @@ class Snowfall {
       if (!this.settings.windEnabled) {
         snowflake.x = snowflake.initialX + swayOffset;
       } else {
-        snowflake.x = snowflake.initialX + snowflake.windVelocity * deltaTime + swayOffset;
         snowflake.initialX += snowflake.windVelocity * deltaTime;
+        snowflake.x = snowflake.initialX + swayOffset;
       }
 
       if (this.settings.rotationEnabled && snowflake.rotationSpeed !== 0) {
