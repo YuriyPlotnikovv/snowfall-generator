@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const FALL_SPEED_MAX = ${params.snowfallSpeed[1]};
 
   const SWAY_ENABLED = ${params.swayEnabled ? 'true' : 'false'};
-  const SWAY_PROBABILITY = 0.5; // вероятность колебаний у снежинки
+  const SWAY_PROBABILITY = 0.5;
   const SWAY_AMPLITUDE_MIN = ${params.swayAmplitude[0]};
   const SWAY_AMPLITUDE_MAX = ${params.swayAmplitude[1]};
   const SWAY_FREQUENCY_MIN = ${params.swayFrequency[0]};
@@ -83,48 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const WIND_SPEED = ${params.windSpeed};
 
   const ROTATION_ENABLED = ${params.rotationEnabled ? 'true' : 'false'};
-  const ROTATION_PROBABILITY = 0.5; // вероятность вращения у снежинки
+  const ROTATION_PROBABILITY = 0.5;
   const ROTATION_SPEED_MIN = ${params.rotationSpeed[0]};
   const ROTATION_SPEED_MAX = ${params.rotationSpeed[1]};
 
-  let container = document.getElementById('snow-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'snow-container';
-    Object.assign(container.style, {
-      position: 'fixed',
-      top: '0',
-      left: '0',
-      width: '100vw',
-      height: '100vh',
-      pointerEvents: 'none',
-      overflow: 'visible',
-      zIndex: '9999',
-      background: 'transparent',
-    });
-    document.body.appendChild(container);
+  function getRandomInRange(min, max) {
+    return min + Math.random() * (max - min);
   }
-
-  let shadow = container.shadowRoot;
-  if (!shadow) {
-    shadow = container.attachShadow({ mode: 'closed' });
-  }
-
-  const snowflakeContainer = document.createElement('div');
-  Object.assign(snowflakeContainer.style, {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
-    overflow: 'visible',
-  });
-
-  shadow.innerHTML = '';
-  shadow.appendChild(snowflakeContainer);
-
-  let viewportWidth = window.innerWidth;
-  let viewportHeight = window.innerHeight;
-
-  const getRandomInRange = (min, max) => min + Math.random() * (max - min);
 
   function getSnowflakeCountByWidth(width) {
     let count;
@@ -246,9 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  let snowflakeCount = getSnowflakeCountByWidth(viewportWidth);
-  let snowflakes = [];
-
   function initSnowflakes() {
     snowflakeContainer.innerHTML = '';
     snowflakes = [];
@@ -274,14 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-
-  let previousTimestamp = performance.now();
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-      previousTimestamp = performance.now();
-    }
-  });
 
   function animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - previousTimestamp) / 1000;
@@ -325,22 +279,78 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(animationStep);
   }
 
+  function handleResize() {
+    clearTimeout(handleResize.timeout);
+    handleResize.timeout = setTimeout(() => {
+      viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+      viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+      const newCount = getSnowflakeCountByWidth(viewportWidth);
+      if (newCount !== snowflakeCount) {
+        snowflakeCount = newCount;
+        cancelAnimationFrame(animationFrameId);
+        initSnowflakes();
+        previousTimestamp = performance.now();
+        animationFrameId = requestAnimationFrame(animationStep);
+      } else {
+        updateSegments();
+      }
+    }, 100);
+  }
+
+  let container = document.getElementById('snow-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'snow-container';
+    Object.assign(container.style, {
+      position: 'fixed',
+      top: '0',
+      left: '0',
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none',
+      overflow: 'visible',
+      zIndex: '9999',
+      background: 'transparent',
+    });
+    document.body.appendChild(container);
+  }
+
+  let shadow = container.shadowRoot;
+  if (!shadow) {
+    shadow = container.attachShadow({ mode: 'closed' });
+  }
+
+  const snowflakeContainer = document.createElement('div');
+  Object.assign(snowflakeContainer.style, {
+    position: 'relative',
+    width: '100vw',
+    height: '100vh',
+    overflow: 'visible',
+  });
+
+  shadow.innerHTML = '';
+  shadow.appendChild(snowflakeContainer);
+
+  let viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+  let viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  let snowflakeCount = getSnowflakeCountByWidth(viewportWidth);
+  let snowflakes = [];
+  let previousTimestamp = performance.now();
+  let animationFrameId;
+
   initSnowflakes();
-  requestAnimationFrame(animationStep);
 
-  window.addEventListener('resize', () => {
-    viewportWidth = window.innerWidth;
-    viewportHeight = window.innerHeight;
+   window.addEventListener('resize', handleResize);
 
-    const newCount = getSnowflakeCountByWidth(viewportWidth);
-    if (newCount !== snowflakeCount) {
-      snowflakeCount = newCount;
-      initSnowflakes();
-    } else {
-      updateSegments();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      previousTimestamp = performance.now();
     }
   });
-});
+
+  animationFrameId = requestAnimationFrame(animationStep);
+  });
 `;
 
   const obfuscated = JavaScriptObfuscator.obfuscate(code, {

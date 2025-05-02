@@ -1,4 +1,26 @@
 class Snowfall {
+  handleResize = (() => {
+    let timeout;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        this.viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        this.viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+        const newCount = this.getSnowflakeCountByWidth(this.viewportWidth);
+        if (newCount !== this.snowflakeCount) {
+          this.snowflakeCount = newCount;
+          cancelAnimationFrame(this.animationFrameId);
+          this.initSnowflakes();
+          this.previousTimestamp = performance.now();
+          this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));
+        } else {
+          this.updateSegments();
+        }
+      }, 100);
+    };
+  })();
+
   constructor(containerId, initialSettings) {
     this.containerId = containerId;
     this.settings = initialSettings;
@@ -40,31 +62,15 @@ class Snowfall {
     this.shadow.innerHTML = '';
     this.shadow.appendChild(this.snowflakeContainer);
 
-    this.viewportWidth = window.innerWidth;
-    this.viewportHeight = window.innerHeight;
-
+    this.viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    this.viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
     this.snowflakes = [];
     this.previousTimestamp = performance.now();
-
     this.snowflakeCount = this.getSnowflakeCountByWidth(this.viewportWidth);
 
     this.initSnowflakes();
 
-    window.addEventListener('resize', () => {
-      this.viewportWidth = window.innerWidth;
-      this.viewportHeight = window.innerHeight;
-
-      const newCount = this.getSnowflakeCountByWidth(this.viewportWidth);
-      if (newCount !== this.snowflakeCount) {
-        this.snowflakeCount = newCount;
-        cancelAnimationFrame(this.animationFrameId);
-        this.initSnowflakes();
-        this.previousTimestamp = performance.now();
-        this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));
-      } else {
-        this.updateSegments();
-      }
-    });
+    window.addEventListener('resize', this.handleResize.bind(this));
 
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
@@ -73,6 +79,10 @@ class Snowfall {
     });
 
     this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));
+  }
+
+  getRandomInRange(min, max) {
+    return min + Math.random() * (max - min);
   }
 
   getSnowflakeCountByWidth(width) {
@@ -88,19 +98,6 @@ class Snowfall {
     }
 
     return Math.max(count, 30);
-  }
-
-  initSnowflakes() {
-    this.snowflakeContainer.innerHTML = '';
-    this.snowflakes = [];
-
-    const count = this.snowflakeCount;
-
-    for (let i = 0; i < count; i++) {
-      const snowflake = this.createSnowflake(i, count);
-      this.snowflakeContainer.appendChild(snowflake.element);
-      this.snowflakes.push(snowflake);
-    }
   }
 
   createSnowflakeElement() {
@@ -124,10 +121,6 @@ class Snowfall {
     });
 
     return svgElement;
-  }
-
-  getRandomInRange(min, max) {
-    return min + Math.random() * (max - min);
   }
 
   generateInitialX(index, segmentWidth) {
@@ -223,6 +216,19 @@ class Snowfall {
     };
   }
 
+  initSnowflakes() {
+    this.snowflakeContainer.innerHTML = '';
+    this.snowflakes = [];
+
+    const count = this.snowflakeCount;
+
+    for (let i = 0; i < count; i++) {
+      const snowflake = this.createSnowflake(i, count);
+      this.snowflakeContainer.appendChild(snowflake.element);
+      this.snowflakes.push(snowflake);
+    }
+  }
+
   updateSegments() {
     const segmentWidth = this.viewportWidth / this.snowflakes.length;
 
@@ -239,7 +245,6 @@ class Snowfall {
 
   animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - this.previousTimestamp) / 1000;
-
     if (deltaTime < 0 || deltaTime > 0.1) {
       deltaTime = 0.016;
     }
