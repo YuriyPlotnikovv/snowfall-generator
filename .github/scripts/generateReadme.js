@@ -21,10 +21,10 @@ function featuresList(data, lang) {
 
     if (Array.isArray(desc)) {
       const descList = desc.map(item => `- ${item}`).join('\n');
-      return `#### ${name}\n\n${descList}`;
+      return `#### ${name}:\n\n${descList}`;
     }
 
-    return `#### ${name}\n\n- ${desc}`;
+    return `#### ${name}:\n\n- ${desc}`;
   }).filter(Boolean).join('\n\n');
 }
 
