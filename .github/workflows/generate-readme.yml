@@ -6,7 +6,7 @@ on:
             - '.info/poster.webp'
             - '.info/project.json'
             - '.info/README-template.md'
-            - '../scripts/generateReadme.js'
+            - '.github/scripts/generateReadme.js'
 
 jobs:
     generate-readme:
