@@ -8,7 +8,7 @@
 
 ## English
 
-**Snowfall Generator**
+### Snowfall Generator
 
 Personal project in PHP and JS
 
@@ -16,17 +16,17 @@ Website with settings selection and Node.js server for generating a custom falli
 
 ---
 
-## About the project
+### About the project
 
-### Difficulty
+#### Difficulty
 
 Hard
 
-### Pages
+#### Pages
 
 - Main
 
-### Additional
+#### Additional
 
 - Separate server for generation
 - English language (translations from variables), language detection based on page URL
@@ -35,20 +35,20 @@ Hard
 - Isolation of internal markup and styles of snowfall
 - Generation and minification of script for installation on the site
 
-### Not implemented
+#### Not implemented
 
 - Choice of 2 types of snowflakes
 - Custom styles for input
 
 ---
 
-## License
+### License
 
 This project is licensed under the [GNU Affero General Public License v3 (AGPLv3)](https://www.gnu.org/licenses/agpl-3.0.html).
 
 ---
 
-## Contacts
+### Contacts
 
 Author: Yuriy Plotnikov  
 Website: https://yuriyplotnikovv.ru  
@@ -58,7 +58,7 @@ Project: https://snowfall-generator.ru/
 
 ## Русский
 
-**Генератор снегопада**
+### Генератор снегопада
 
 Личный проект на PHP и JS
 
@@ -66,17 +66,17 @@ Project: https://snowfall-generator.ru/
 
 ---
 
-## О проекте
+### О проекте
 
-### Сложность
+#### Сложность
 
 Hard
 
-### Страницы
+#### Страницы
 
 - Главная
 
-### Дополнительно
+#### Дополнительно
 
 - Отдельный сервер для генерации
 - Английский язык (переводы из переменных), определение языка на основе url страницы
@@ -85,21 +85,21 @@ Hard
 - Изоляция внутренней разметки и стилей снегопада
 - Генерация и минификация скрипта для установки на сайт
 
-### Не реализовано
+#### Не реализовано
 
 - Выбор 2х видов снежинок
 - Кастомные стили для input
 
 ---
 
-## Лицензия
+### Лицензия
 
 Проект распространяется под лицензией [GNU Affero General Public License v3 (AGPLv3)](https://www.gnu.org/licenses/agpl-3.0.html).
 
 ---
 
-## Контакты
+### Контакты
 
-Автор: Yuriy Plotnikov  
+Автор: Yuriy Plotников  
 Сайт: https://yuriyplotnikovv.ru  
 Проект: https://snowfall-generator.ru/
