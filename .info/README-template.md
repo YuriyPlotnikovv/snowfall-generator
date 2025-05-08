@@ -1,6 +1,6 @@
 # {{title-en}}
 
-![Poster](.info/poster.webp)
+<img src=".info/poster.webp" alt="Poster" width="600" />
 
 [🇬🇧 English](#english) | [🇷🇺 Русский](#русский)
 
@@ -16,7 +16,7 @@
 
 ---
 
-## Features
+## About the project
 
 {{features-en}}
 
@@ -46,7 +46,7 @@ Project: {{deploy}}
 
 ---
 
-## Возможности
+## О проекте
 
 {{features-ru}}
 

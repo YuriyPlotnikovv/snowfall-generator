@@ -18,11 +18,17 @@ function featuresList(data, lang) {
     const name = f[`name-${lang}`];
     const desc = f[`description-${lang}`];
     if (!name || !desc) return '';
-    return `- ${name}:\n${formatDesc(desc)}`;
+
+    // Если описание — массив, выводим как список
+    if (Array.isArray(desc)) {
+      const descList = desc.map(item => `- ${item}`).join('\n');
+      return `### ${name}\n\n${descList}`;
+    }
+
+    return `### ${name}\n\n${desc}`;
   }).filter(Boolean).join('\n\n');
 }
 
-// Простая функция замены плейсхолдеров {{var}} в шаблоне
 function fillTemplate(template, vars) {
   return template.replace(/{{\s*([\w-]+)\s*}}/g, (_, key) => vars[key] || '');
 }
