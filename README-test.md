@@ -1,6 +1,6 @@
 # Snowfall Generator
 
-![Poster](.info/poster.webp)
+<img src=".info/poster.webp" alt="Poster" width="600" />
 
 [🇬🇧 English](#english) | [🇷🇺 Русский](#русский)
 
@@ -16,15 +16,18 @@ Website with settings selection and Node.js server for generating a custom falli
 
 ---
 
-## Features
+## About the project
 
-- Difficulty:
+### Difficulty
+
 Hard
 
-- Pages:
+### Pages
+
 - Main
 
-- Additional:
+### Additional
+
 - Separate server for generation
 - English language (translations from variables), language detection based on page URL
 - Settings for appearance, size and behavior of snowflakes
@@ -32,7 +35,8 @@ Hard
 - Isolation of internal markup and styles of snowfall
 - Generation and minification of script for installation on the site
 
-- Not implemented:
+### Not implemented
+
 - Choice of 2 types of snowflakes
 - Custom styles for input
 
@@ -62,15 +66,18 @@ Project: https://snowfall-generator.ru/
 
 ---
 
-## Возможности
+## О проекте
 
-- Сложность:
+### Сложность
+
 Hard
 
-- Страницы:
+### Страницы
+
 - Главная
 
-- Дополнительно:
+### Дополнительно
+
 - Отдельный сервер для генерации
 - Английский язык (переводы из переменных), определение языка на основе url страницы
 - Настройки внешнего вида, размера и поведения снежинок
@@ -78,7 +85,8 @@ Hard
 - Изоляция внутренней разметки и стилей снегопада
 - Генерация и минификация скрипта для установки на сайт
 
-- Не реализовано:
+### Не реализовано
+
 - Выбор 2х видов снежинок
 - Кастомные стили для input
 
