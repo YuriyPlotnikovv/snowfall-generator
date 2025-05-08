@@ -1,0 +1,63 @@
+const fs = require('fs');
+const path = require('path');
+
+const projectJsonPath = path.join(__dirname, '..', '..', '.info', 'project.json');
+const templatePath = path.join(__dirname, '..', '..', '.info', 'README-template.md');
+const readmePath = path.join(__dirname, '..', '..', 'README-test.md');
+
+function formatDesc(desc) {
+  if (Array.isArray(desc)) {
+    return desc.map(d => `- ${d}`).join('\n');
+  }
+  return desc;
+}
+
+function featuresList(data, lang) {
+  if (!Array.isArray(data.features)) return '';
+  return data.features.map(f => {
+    const name = f[`name-${lang}`];
+    const desc = f[`description-${lang}`];
+    if (!name || !desc) return '';
+    return `- ${name}:\n${formatDesc(desc)}`;
+  }).filter(Boolean).join('\n\n');
+}
+
+// Простая функция замены плейсхолдеров {{var}} в шаблоне
+function fillTemplate(template, vars) {
+  return template.replace(/{{\s*([\w-]+)\s*}}/g, (_, key) => vars[key] || '');
+}
+
+function main() {
+  if (!fs.existsSync(projectJsonPath)) {
+    console.error('project.json не найден');
+    process.exit(1);
+  }
+  if (!fs.existsSync(templatePath)) {
+    console.error('Шаблон README.tpl.md не найден');
+    process.exit(1);
+  }
+
+  const rawData = fs.readFileSync(projectJsonPath, 'utf8');
+  const data = JSON.parse(rawData);
+
+  const template = fs.readFileSync(templatePath, 'utf8');
+
+  const vars = {
+    'title-en': data['title-en'],
+    'title-ru': data['title-ru'],
+    'textFirst-en': data['textFirst-en'],
+    'textFirst-ru': data['textFirst-ru'],
+    'textSecond-en': data['textSecond-en'],
+    'textSecond-ru': data['textSecond-ru'],
+    'features-en': featuresList(data, 'en'),
+    'features-ru': featuresList(data, 'ru'),
+    'deploy': data.deploy
+  };
+
+  const readme = fillTemplate(template, vars);
+
+  fs.writeFileSync(readmePath, readme, 'utf8');
+  console.log('README.md сгенерирован из шаблона');
+}
+
+main();

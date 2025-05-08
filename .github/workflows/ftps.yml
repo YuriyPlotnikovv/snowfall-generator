@@ -36,7 +36,7 @@ jobs:
             - name: Generate Config
               env:
                   API_URL: ${{ secrets.API_URL }}
-              run: node generateConfig.js
+              run: node .github/scripts/generateConfig.js
 
             - name: SFTP Deploy
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -48,10 +48,12 @@ jobs:
                   local-dir: ./
                   exclude: |
                       **/.git*
+                      **/.github/**
+                      **/.info/**
                       **/node_modules/**
                       **/src/**
                       **/package.json
                       **/package-lock.json
                       **/gulpfile.js
-                      **/generateApiKeys.js
                       **/README.md
+                      **/LICENSE

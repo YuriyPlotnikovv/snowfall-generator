@@ -1,0 +1,31 @@
+name: Generate README
+
+on:
+    push:
+        paths:
+            - '.info/poster.webp'
+            - '.info/project.json'
+            - '.info/README-template.md'
+            - '../scripts/generateReadme.js'
+
+jobs:
+    generate-readme:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '23'
+
+            - name: Generate README.md
+              run: node .github/scripts/generate-readme.js
+
+            - name: Commit and push changes
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "Generate README.md from template"
+                  file_pattern: README.md
