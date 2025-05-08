@@ -3,8 +3,12 @@ name: Deploy snowfall-generator to Beget
 on:
     push:
         branches: [ "main" ]
+        paths-ignore:
+            - '.info/**'
     pull_request:
         branches: [ "main" ]
+        paths-ignore:
+            - '.info/**'
 
 jobs:
     build:
@@ -12,23 +16,16 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Set up Node.js
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v4
               with:
-                  node-version: '23'
-
-            - name: Cache Node.js modules
-              uses: actions/cache@v3
-              with:
-                  path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
+                  node-version: 23
+                  cache: 'npm'
 
             - name: Install dependencies
-              run: npm install
+              run: npm ci
 
             - name: Build project
               run: npm run build

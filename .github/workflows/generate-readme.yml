@@ -7,25 +7,29 @@ on:
             - '.info/project.json'
             - '.info/README-template.md'
             - '.github/scripts/generateReadme.js'
+            - '.github/workflows/generate-readme.yml'
 
 jobs:
     generate-readme:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v3
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v2
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
               with:
-                  node-version: '23'
+                  node-version: 23
+                  cache: 'npm'
 
             - name: Generate README.md
               run: node .github/scripts/generate-readme.js
 
             - name: Commit and push changes
-              uses: stefanzweifel/git-auto-commit-action@v4
+              uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "Generate README.md from template"
-                  file_pattern: README.md
+                  file_pattern: README-test.md
+                  commit_user_name: "GitHub Actions Bot"
+                  commit_user_email: "actions@github.com"
