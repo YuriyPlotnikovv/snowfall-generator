@@ -10,6 +10,8 @@
 
 ### {{title-en}}
 
+Project: {{deploy}}
+
 {{textFirst-en}}
 
 {{textSecond-en}}
@@ -32,13 +34,14 @@ This project is licensed under the [GNU Affero General Public License v3 (AGPLv3
 
 Author: Yuriy Plotnikov  
 Website: https://yuriyplotnikovv.ru  
-Project: {{deploy}}
 
 ---
 
 ## Русский
 
 ### {{title-ru}}
+
+Проект: {{deploy}}
 
 {{textFirst-ru}}
 
@@ -62,4 +65,3 @@ Project: {{deploy}}
 
 Автор: Yuriy Plotnikov  
 Сайт: https://yuriyplotnikovv.ru  
-Проект: {{deploy}}
