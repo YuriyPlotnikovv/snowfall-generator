@@ -5,6 +5,7 @@ on:
         branches: [ "main" ]
         paths-ignore:
             - '.info/**'
+            - '.github/workflows/generateReadme.yml'
     pull_request:
         branches: [ "main" ]
 
