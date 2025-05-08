@@ -19,13 +19,12 @@ function featuresList(data, lang) {
     const desc = f[`description-${lang}`];
     if (!name || !desc) return '';
 
-    // Если описание — массив, выводим как список
     if (Array.isArray(desc)) {
       const descList = desc.map(item => `- ${item}`).join('\n');
-      return `### ${name}\n\n${descList}`;
+      return `#### ${name}\n\n${descList}`;
     }
 
-    return `### ${name}\n\n${desc}`;
+    return `#### ${name}\n\n${desc}`;
   }).filter(Boolean).join('\n\n');
 }
 
@@ -39,7 +38,7 @@ function main() {
     process.exit(1);
   }
   if (!fs.existsSync(templatePath)) {
-    console.error('Шаблон README.tpl.md не найден');
+    console.error('Шаблон README-template.md не найден');
     process.exit(1);
   }
 
@@ -47,6 +46,8 @@ function main() {
   const data = JSON.parse(rawData);
 
   const template = fs.readFileSync(templatePath, 'utf8');
+
+  const posterImg = `<img src=".info/poster.webp" alt="Poster" width="600" />`;
 
   const vars = {
     'title-en': data['title-en'],
@@ -57,7 +58,8 @@ function main() {
     'textSecond-ru': data['textSecond-ru'],
     'features-en': featuresList(data, 'en'),
     'features-ru': featuresList(data, 'ru'),
-    'deploy': data.deploy
+    'deploy': data.deploy,
+    'poster-img': posterImg
   };
 
   const readme = fillTemplate(template, vars);

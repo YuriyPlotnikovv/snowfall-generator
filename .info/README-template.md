@@ -1,6 +1,6 @@
 # {{title-en}}
 
-<img src=".info/poster.webp" alt="Poster" width="600" />
+{{poster-img}}
 
 [🇬🇧 English](#english) | [🇷🇺 Русский](#русский)
 
@@ -8,7 +8,7 @@
 
 ## English
 
-**{{title-en}}**
+### {{title-en}}
 
 {{textFirst-en}}
 
@@ -16,19 +16,19 @@
 
 ---
 
-## About the project
+### About the project
 
 {{features-en}}
 
 ---
 
-## License
+### License
 
 This project is licensed under the [GNU Affero General Public License v3 (AGPLv3)](https://www.gnu.org/licenses/agpl-3.0.html).
 
 ---
 
-## Contacts
+### Contacts
 
 Author: Yuriy Plotnikov  
 Website: https://yuriyplotnikovv.ru  
@@ -38,7 +38,7 @@ Project: {{deploy}}
 
 ## Русский
 
-**{{title-ru}}**
+### {{title-ru}}
 
 {{textFirst-ru}}
 
@@ -46,20 +46,20 @@ Project: {{deploy}}
 
 ---
 
-## О проекте
+### О проекте
 
 {{features-ru}}
 
 ---
 
-## Лицензия
+### Лицензия
 
 Проект распространяется под лицензией [GNU Affero General Public License v3 (AGPLv3)](https://www.gnu.org/licenses/agpl-3.0.html).
 
 ---
 
-## Контакты
+### Контакты
 
-Автор: Yuriy Plotnikov  
+Автор: Yuriy Plotников  
 Сайт: https://yuriyplotnikovv.ru  
 Проект: {{deploy}}
