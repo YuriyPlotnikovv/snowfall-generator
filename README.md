@@ -10,6 +10,8 @@
 
 ### Snowfall Generator
 
+Project: https://snowfall-generator.ru/
+
 Personal project in PHP and JS
 
 Website with settings selection and Node.js server for generating a custom falling snow script for the site. The script is generated according to specified parameters and packaged into a ZIP archive with a license and instructions.
@@ -52,13 +54,14 @@ This project is licensed under the [GNU Affero General Public License v3 (AGPLv3
 
 Author: Yuriy Plotnikov  
 Website: https://yuriyplotnikovv.ru  
-Project: https://snowfall-generator.ru/
 
 ---
 
 ## Русский
 
 ### Генератор снегопада
+
+Проект: https://snowfall-generator.ru/
 
 Личный проект на PHP и JS
 
@@ -102,4 +105,3 @@ Project: https://snowfall-generator.ru/
 
 Автор: Yuriy Plotnikov  
 Сайт: https://yuriyplotnikovv.ru  
-Проект: https://snowfall-generator.ru/
