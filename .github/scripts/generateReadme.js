@@ -3,7 +3,7 @@ const path = require('path');
 
 const projectJsonPath = path.join(__dirname, '..', '..', '.info', 'project.json');
 const templatePath = path.join(__dirname, '..', '..', '.info', 'README-template.md');
-const readmePath = path.join(__dirname, '..', '..', 'README-test.md');
+const readmePath = path.join(__dirname, '..', '..', 'README.md');
 
 function formatDesc(desc) {
   if (Array.isArray(desc)) {
@@ -24,7 +24,7 @@ function featuresList(data, lang) {
       return `#### ${name}\n\n${descList}`;
     }
 
-    return `#### ${name}\n\n${desc}`;
+    return `#### ${name}\n\n- ${desc}`;
   }).filter(Boolean).join('\n\n');
 }
 
@@ -32,7 +32,7 @@ function fillTemplate(template, vars) {
   return template.replace(/{{\s*([\w-]+)\s*}}/g, (_, key) => vars[key] || '');
 }
 
-function main() {
+function generateReadme() {
   if (!fs.existsSync(projectJsonPath)) {
     console.error('project.json не найден');
     process.exit(1);
@@ -68,4 +68,4 @@ function main() {
   console.log('README.md сгенерирован из шаблона');
 }
 
-main();
+generateReadme();
