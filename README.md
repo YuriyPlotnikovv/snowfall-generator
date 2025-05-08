@@ -50,8 +50,8 @@ This project is licensed under the [GNU Affero General Public License v3 (AGPLv3
 
 ### Contacts
 
-Author: Yuriy Plotnikov
-Website: https://yuriyplotnikovv.ru
+Author: Yuriy Plotnikov  
+Website: https://yuriyplotnikovv.ru  
 Project: https://snowfall-generator.ru/
 
 ---
@@ -100,6 +100,6 @@ Project: https://snowfall-generator.ru/
 
 ### Контакты
 
-Автор: Yuriy Plotnikov
-Сайт: https://yuriyplotnikovv.ru
+Автор: Yuriy Plotnikov  
+Сайт: https://yuriyplotnikovv.ru  
 Проект: https://snowfall-generator.ru/
