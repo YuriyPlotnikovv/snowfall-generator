@@ -7,8 +7,6 @@ on:
             - '.info/**'
     pull_request:
         branches: [ "main" ]
-        paths-ignore:
-            - '.info/**'
 
 jobs:
     build:
@@ -21,8 +19,15 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 23
-                  cache: 'npm'
+                  node-version: '23'
+
+            - name: Cache Node.js modules
+              uses: actions/cache@v4
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
             - name: Install dependencies
               run: npm install
