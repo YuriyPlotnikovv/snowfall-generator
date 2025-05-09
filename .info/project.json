@@ -8,12 +8,6 @@
     "deploy": "https://snowfall-generator.ru/",
     "features": [
         {
-            "name-ru": "Сложность",
-            "name-en": "Difficulty",
-            "description-ru": "Hard",
-            "description-en": "Hard"
-        },
-        {
             "name-ru": "Страницы",
             "name-en": "Pages",
             "description-ru": [
@@ -24,8 +18,8 @@
             ]
         },
         {
-            "name-ru": "Дополнительно",
-            "name-en": "Additional",
+            "name-ru": "Функциональность",
+            "name-en": "Functionality",
             "description-ru": [
                 "Отдельный сервер для генерации",
                 "Английский язык (переводы из переменных), определение языка на основе url страницы",
