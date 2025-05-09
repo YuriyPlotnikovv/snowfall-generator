@@ -20,15 +20,11 @@ Website with settings selection and Node.js server for generating a custom falli
 
 ### About the project
 
-#### Difficulty:
-
-- Hard
-
 #### Pages:
 
 - Main
 
-#### Additional:
+#### Functionality:
 
 - Separate server for generation
 - English language (translations from variables), language detection based on page URL
@@ -71,15 +67,11 @@ Website: https://yuriyplotnikovv.ru
 
 ### О проекте
 
-#### Сложность:
-
-- Hard
-
 #### Страницы:
 
 - Главная
 
-#### Дополнительно:
+#### Функциональность:
 
 - Отдельный сервер для генерации
 - Английский язык (переводы из переменных), определение языка на основе url страницы
