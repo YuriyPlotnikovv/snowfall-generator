@@ -12,7 +12,7 @@ const content = JSON.stringify({
   apiBaseUrl: apiUrl
 }, null, 4);
 
-const filePath = path.join(__dirname, 'config.json');
+const filePath = path.join(process.env.GITHUB_WORKSPACE, 'config.json');
 
 fs.writeFileSync(filePath, content, 'utf8');
 console.log('Config is have been generated.');
