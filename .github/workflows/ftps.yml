@@ -45,9 +45,9 @@ jobs:
             - name: SFTP Deploy
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5
               with:
-                  server: yuriypvh.beget.tech
-                  username: ${{ secrets.SSH_USER }}
-                  password: ${{ secrets.SSH_PASSWORD }}
+                  server: ${{ secrets.SFTP_SERVER }}
+                  username: ${{ secrets.SFTP_USER }}
+                  password: ${{ secrets.SFTP_PASSWORD }}
                   protocol: ftps
                   local-dir: ./
                   exclude: |
@@ -56,6 +56,7 @@ jobs:
                       **/.info/**
                       **/node_modules/**
                       **/src/**
+                      **/.editorconfig
                       **/package.json
                       **/package-lock.json
                       **/gulpfile.js
