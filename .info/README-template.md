@@ -1,5 +1,4 @@
 # {{title-en}}
-тест
 
 {{poster-img}}
 
