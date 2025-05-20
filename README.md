@@ -20,6 +20,10 @@ Website with settings selection and Node.js server for generating a custom falli
 
 ### About the project
 
+#### Development date:
+
+- April 2025
+
 #### Pages:
 
 - Main
@@ -66,6 +70,10 @@ Website: https://yuriyplotnikovv.ru
 ---
 
 ### О проекте
+
+#### Дата разработки:
+
+- Апрель 2025
 
 #### Страницы:
 
