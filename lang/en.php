@@ -5,6 +5,7 @@ return [
     'PAGE_DESCRIPTION' => 'Free online snowfall generator. Create a unique falling snowflake effect for your website in just a few clicks.',
     'PAGE_KEYWORDS' => 'snowfall generator, snowfall on website, online snowflakes, snow effect, falling snow, snow on website, snow script, snowfall script',
     'LOGO_TEXT' => 'Snowfall Generator',
+    'SUPPORT_THE_AUTHOR' => 'Support the author',
     'MAIN_TITLE' => 'Online Snowfall Generator for Your Website',
     'WELCOME_TITLE' => 'Welcome!',
     'WELCOME_TEXT' => 'Create a unique and beautiful effect of falling snowflakes, leaves, or flowers for your website — choose any SVG and customize the effect to your liking.',

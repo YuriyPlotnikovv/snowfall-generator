@@ -1,5 +1,6 @@
 <?php
 global $MESS, $LANG, $PATH;
+$badgeLabel = urlencode($MESS['SUPPORT_THE_AUTHOR']);
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +44,10 @@ global $MESS, $LANG, $PATH;
                     <span class="header__logo-text"><?= $MESS['LOGO_TEXT'] ?></span>
                 </a>
             </div>
+
+            <a href="https://yoomoney.ru/fundraise/1DA99C0NRL2.251010">
+                <img src="https://img.shields.io/badge/YooMoney-32CD32?style=for-the-badge&label=<?= $badgeLabel ?>" alt="<?= $MESS['SUPPORT_THE_AUTHOR'] ?>"/>
+            </a>
 
             <?php Tools::includeFile('lang-switcher'); ?>
         </div>
