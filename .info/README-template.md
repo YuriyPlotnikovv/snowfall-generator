@@ -2,9 +2,12 @@
 
 {{poster-img}}
 
-[🇬🇧 English](#english) | [🇷🇺 Русский](#русский)
+[![Support the author](https://img.shields.io/badge/YooMoney-32CD32?style=for-the-badge&label=Support%20the%20author)](https://yoomoney.ru/fundraise/1DA59R1S4LI.251010)
 
 ---
+
+[🇬🇧 English](#english) | [🇷🇺 Русский](#русский)
+
 
 ## English
 
