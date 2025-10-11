@@ -5,14 +5,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 50px;
+    gap: 15px;
     box-sizing: border-box;
     max-width: var.$desktop-mid-width;
     margin: 0 auto;
     padding: 10px 100px;
 
     @media (max-width: var.$desktop-mid-width) {
-      gap: 30px;
       padding: 10px 80px;
     }
     @media (max-width: var.$tablet-max-width) {
@@ -34,13 +33,13 @@
   }
 
   &__logo-image {
-    width: 110px;
+    width: 50px;
     height: 50px;
 
     fill: var.$colorBlackTwo;
 
     @media (max-width: var.$tablet-max-width) {
-      width: 90px;
+      width: 40px;
       height: 40px;
     }
   }
@@ -52,18 +51,16 @@
     @media (max-width: var.$tablet-max-width) {
       font-size: 22px;
     }
-    @media (max-width: var.$mobile-mid-width) {
+    @media (max-width: var.$mobile-max-width) {
       display: none;
     }
   }
 
   &__badge {
-    transition: opacity 0.4s ease-in-out;
+    width: max-content;
+    padding: 10px;
 
-    &:hover,
-    &:active {
-      opacity: 0.6;
-    }
+    text-wrap: nowrap;
   }
 
   &__lang-switcher {

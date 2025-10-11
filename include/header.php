@@ -45,8 +45,8 @@ $badgeLabel = urlencode($MESS['SUPPORT_THE_AUTHOR']);
                 </a>
             </div>
 
-            <a class="header__badge" href="https://yoomoney.ru/fundraise/1DA99C0NRL2.251010" target="_blank">
-                <img src="https://img.shields.io/badge/YooMoney-32CD32?style=for-the-badge&label=<?= $badgeLabel ?>" alt="<?= $MESS['SUPPORT_THE_AUTHOR'] ?>"/>
+            <a class="header__badge button button--default" href="https://yoomoney.ru/fundraise/1DA99C0NRL2.251010" target="_blank">
+                <?= $MESS['SUPPORT_THE_AUTHOR'] ?>
             </a>
 
             <?php Tools::includeFile('lang-switcher'); ?>
