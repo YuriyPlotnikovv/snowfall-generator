@@ -1,0 +1,2 @@
+<?php
+const YOOMONEY_CODE = '1DA99C0NRL2.251010';

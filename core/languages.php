@@ -3,16 +3,16 @@ global $MESS, $PATH, $LANG;
 
 $allowed_languages = ['en', 'ru'];
 
-function getLangFromUrl($uri, $allowed_languages)
+function getLangFromUrl($uri, $allowed_languages): string
 {
     $path = parse_url($uri, PHP_URL_PATH);
     $segments = explode('/', trim($path, '/'));
 
-    if (isset($segments[0]) && preg_match('/^[a-zA-Z]{2}$/', $segments[0]) && in_array($segments[0], $allowed_languages)) {
+    if (isset($segments[0]) && preg_match('/^[a-zA-Z]{2}$/', $segments[0]) && in_array($segments[0], $allowed_languages, true)) {
         return $segments[0];
-    } else {
-        return 'ru';
     }
+
+    return 'ru';
 }
 
 $langFromUrl = getLangFromUrl($_SERVER['REQUEST_URI'], $allowed_languages);

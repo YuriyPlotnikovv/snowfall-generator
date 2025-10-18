@@ -8,7 +8,7 @@ $uri = $_SERVER['REQUEST_URI'];
 $trimmedUri = trim($uri, '/');
 $segments = $trimmedUri === '' ? [] : explode('/', $trimmedUri);
 
-if (isset($segments[0]) && preg_match('/^[a-zA-Z]{2}$/', $segments[0]) && in_array($segments[0], $allowed_languages)) {
+if (isset($segments[0]) && preg_match('/^[a-zA-Z]{2}$/', $segments[0]) && in_array($segments[0], $allowed_languages, true)) {
     $language = array_shift($segments);
 } else {
     $language = $LANG;

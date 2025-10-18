@@ -28,9 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const ROTATION_SPEED_MAX = 90;
 
   let container = document.getElementById('snow-container');
+
   if (!container) {
     container = document.createElement('div');
     container.id = 'snow-container';
+
     Object.assign(container.style, {
       position: 'fixed',
       top: '0',
@@ -42,15 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
       zIndex: '9999',
       background: 'transparent',
     });
+
     document.body.appendChild(container);
   }
 
   let shadow = container.shadowRoot;
+
   if (!shadow) {
-    shadow = container.attachShadow({ mode: 'closed' });
+    shadow = container.attachShadow({mode: 'closed'});
   }
 
   const snowflakeContainer = document.createElement('div');
+
   Object.assign(snowflakeContainer.style, {
     position: 'relative',
     width: '100vw',
@@ -68,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getSnowflakeCountByWidth(width) {
     let count;
+
     if (width <= 767) {
       count = Math.floor(SNOWFLAKES_COUNT_BASE / 3);
     } else if (width <= 1325) {
@@ -83,7 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = SNOWFLAKE_SVG_PATH.trim();
     const svgElement = wrapper.firstChild;
+
     if (!svgElement) return document.createElement('div');
+
     Object.assign(svgElement.style, {
       width: '100%',
       height: '100%',
@@ -91,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       pointerEvents: 'none',
       userSelect: 'none',
     });
+
     return svgElement;
   }
 
@@ -98,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!WIND_ENABLED) {
       return segmentWidth * index + getRandomInRange(0, segmentWidth);
     }
+
     if (WIND_TYPE === WIND_TYPE_LEFT) {
       if ((WIND_SPEED >= 50 && viewportWidth <= 767) || WIND_SPEED >= 100) {
         return getRandomInRange(-viewportWidth, viewportWidth);
@@ -105,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return getRandomInRange(-viewportWidth * 0.5, viewportWidth);
       }
     }
+
     if (WIND_TYPE === WIND_TYPE_RIGHT) {
       if ((WIND_SPEED >= 50 && viewportWidth <= 767) || WIND_SPEED >= 100) {
         return getRandomInRange(0, viewportWidth * 2);
@@ -118,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createSnowflake(index, total) {
     const wrapper = document.createElement('div');
+
     Object.assign(wrapper.style, {
       position: 'absolute',
       left: '0',
@@ -131,41 +143,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const size = getRandomInRange(SNOWFLAKES_SIZE_MIN, SNOWFLAKES_SIZE_MAX);
     const opacity = getRandomInRange(SNOWFLAKES_OPACITY_MIN, SNOWFLAKES_OPACITY_MAX);
     const fallSpeed = getRandomInRange(FALL_SPEED_MIN, FALL_SPEED_MAX);
+    const segmentWidth = viewportWidth / total;
 
     // Колебания с вероятностью SWAY_PROBABILITY
     let swayAmplitude = 0;
     let swayFrequency = 0;
     let swayPhase = 0;
+    let windVelocity = 0;
+    let rotationSpeed = 0;
+
     if (SWAY_ENABLED && Math.random() < SWAY_PROBABILITY) {
       swayAmplitude = getRandomInRange(SWAY_AMPLITUDE_MIN, SWAY_AMPLITUDE_MAX);
       swayFrequency = getRandomInRange(SWAY_FREQUENCY_MIN, SWAY_FREQUENCY_MAX);
       swayPhase = Math.random() * 2 * Math.PI;
     }
 
-    const segmentWidth = viewportWidth / total;
-
-    let windVelocity = 0;
     if (WIND_ENABLED) {
-      if (WIND_TYPE === WIND_TYPE_LEFT) windVelocity = WIND_SPEED;
-      else if (WIND_TYPE === WIND_TYPE_RIGHT) windVelocity = -WIND_SPEED;
+      if (WIND_TYPE === WIND_TYPE_LEFT) {
+        windVelocity = WIND_SPEED;
+      } else if (WIND_TYPE === WIND_TYPE_RIGHT) {
+        windVelocity = -WIND_SPEED;
+      }
     }
 
     // Вращение с вероятностью ROTATION_PROBABILITY
-    let rotationSpeed = 0;
     if (ROTATION_ENABLED && Math.random() < ROTATION_PROBABILITY) {
       rotationSpeed = getRandomInRange(ROTATION_SPEED_MIN, ROTATION_SPEED_MAX) * (Math.random() < 0.5 ? 1 : -1);
     }
 
     const initialX = generateInitialX(index, segmentWidth);
     const initialY = getRandomInRange(0, viewportHeight);
-
     const svgElement = createSnowflakeElement();
 
     wrapper.style.width = size + 'px';
     wrapper.style.height = size + 'px';
     wrapper.style.opacity = opacity.toFixed(2);
     wrapper.style.transform = `translate(${initialX}px, ${initialY}px)`;
-
     wrapper.appendChild(svgElement);
 
     return {
@@ -226,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - previousTimestamp) / 1000;
+
     if (deltaTime < 0 || deltaTime > 0.1) {
       deltaTime = 0.016;
     }

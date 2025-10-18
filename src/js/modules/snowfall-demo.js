@@ -2,8 +2,8 @@ class Snowfall {
   constructor(containerId, initialSettings) {
     this.containerId = containerId;
     this.settings = initialSettings;
-
     this.container = document.getElementById(this.containerId);
+
     if (!this.container) {
       this.container = document.createElement('div');
       this.container.id = this.containerId;
@@ -30,6 +30,7 @@ class Snowfall {
     }
 
     this.snowflakeContainer = document.createElement('div');
+
     Object.assign(this.snowflakeContainer.style, {
       position: 'relative',
       width: '100vw',
@@ -39,14 +40,12 @@ class Snowfall {
 
     this.shadow.innerHTML = '';
     this.shadow.appendChild(this.snowflakeContainer);
-
     this.viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
     this.viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
     this.previousViewportWidth = this.viewportWidth;
     this.snowflakes = [];
     this.previousTimestamp = performance.now();
     this.snowflakeCount = this.getSnowflakeCountByWidth(this.viewportWidth);
-
     this.initSnowflakes();
 
     window.addEventListener('resize', this.handleResize.bind(this));
@@ -82,7 +81,6 @@ class Snowfall {
   createSnowflakeElement() {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = this.settings.snowflakeSVG;
-
     const svgElement = wrapper.firstChild;
 
     if (!svgElement) {
@@ -104,6 +102,7 @@ class Snowfall {
     if (!this.settings.windEnabled) {
       return segmentWidth * index + this.getRandomInRange(0, segmentWidth);
     }
+
     if (this.settings.windType === 'left') {
       if ((this.settings.windSpeed >= 50 && this.viewportWidth <= 767) || this.settings.windSpeed >= 100) {
         return this.getRandomInRange(-this.viewportWidth, this.viewportWidth);
@@ -111,6 +110,7 @@ class Snowfall {
         return this.getRandomInRange(-this.viewportWidth * 0.5, this.viewportWidth);
       }
     }
+
     if (this.settings.windType === 'right') {
       if ((this.settings.windSpeed >= 50 && this.viewportWidth <= 767) || this.settings.windSpeed >= 100) {
         return this.getRandomInRange(0, this.viewportWidth * 2);
@@ -124,6 +124,7 @@ class Snowfall {
 
   createSnowflake(index, total) {
     const wrapper = document.createElement('div');
+
     Object.assign(wrapper.style, {
       position: 'absolute',
       left: '0',
@@ -142,6 +143,8 @@ class Snowfall {
     let swayAmplitude = 0;
     let swayFrequency = 0;
     let swayPhase = 0;
+    let windVelocity = 0;
+    let rotationSpeed = 0;
 
     if (this.settings.swayEnabled && Math.random() < 0.5) {
       swayAmplitude = this.getRandomInRange(this.settings.swayAmplitude[0], this.settings.swayAmplitude[1]);
@@ -149,7 +152,6 @@ class Snowfall {
       swayPhase = Math.random() * 2 * Math.PI;
     }
 
-    let windVelocity = 0;
     if (this.settings.windEnabled) {
       if (this.settings.windType === 'left') {
         windVelocity = this.settings.windSpeed;
@@ -158,7 +160,6 @@ class Snowfall {
       }
     }
 
-    let rotationSpeed = 0;
     if (this.settings.rotationEnabled && Math.random() < 0.5) {
       rotationSpeed = this.getRandomInRange(this.settings.rotationSpeed[0], this.settings.rotationSpeed[1]) * (Math.random() < 0.5 ? 1 : -1);
     }
@@ -166,8 +167,8 @@ class Snowfall {
     const initialX = this.generateInitialX(index, segmentWidth);
     const initialY = this.getRandomInRange(0, this.viewportHeight);
     const segmentOffset = (initialX - segmentWidth * index) / segmentWidth;
-
     const svgElement = this.createSnowflakeElement();
+
     wrapper.style.width = size + 'px';
     wrapper.style.height = size + 'px';
     wrapper.style.opacity = opacity.toFixed(2);
@@ -213,7 +214,6 @@ class Snowfall {
 
     for (const snowflake of this.snowflakes) {
       snowflake.segmentWidth = segmentWidth;
-
       const newInitialX = segmentWidth * snowflake.segmentIndex + segmentWidth * snowflake.segmentOffset;
       const offsetFromInitial = snowflake.x - snowflake.initialX;
       snowflake.initialX = newInitialX;
@@ -227,6 +227,7 @@ class Snowfall {
 
   animationStep(currentTimestamp) {
     let deltaTime = (currentTimestamp - this.previousTimestamp) / 1000;
+
     if (deltaTime < 0 || deltaTime > 0.1) {
       deltaTime = 0.016;
     }
@@ -237,6 +238,7 @@ class Snowfall {
       snowflake.y += snowflake.fallSpeed * deltaTime;
 
       let swayOffset = 0;
+
       if (this.settings.swayEnabled) {
         swayOffset = snowflake.swayAmplitude * Math.sin(2 * Math.PI * snowflake.swayFrequency * currentTimestamp / 1000 + snowflake.swayPhase);
       }
@@ -269,22 +271,22 @@ class Snowfall {
 
   handleResize = (() => {
     let timeout;
+
     return () => {
       clearTimeout(timeout);
+
       timeout = setTimeout(() => {
         const newViewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
         const newViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-
         const widthChanged = newViewportWidth !== this.previousViewportWidth;
         const heightChanged = newViewportHeight !== this.viewportHeight;
-
         this.viewportHeight = newViewportHeight;
 
         if (widthChanged) {
           this.viewportWidth = newViewportWidth;
           this.previousViewportWidth = newViewportWidth;
-
           const newCount = this.getSnowflakeCountByWidth(this.viewportWidth);
+
           if (newCount !== this.snowflakeCount) {
             this.snowflakeCount = newCount;
             cancelAnimationFrame(this.animationFrameId);
@@ -309,17 +311,15 @@ class Snowfall {
     const prevType = this.settings.snowflakeType;
     const prevCount = this.settings.snowflakesCount;
     const prevSVG = this.settings.snowflakeSVG;
-
     this.settings = Object.assign({}, this.settings, newSettings);
-
     this.snowflakeCount = this.getSnowflakeCountByWidth(this.viewportWidth);
-
     const typeChanged = prevType !== this.settings.snowflakeType;
     const countChanged = prevCount !== this.settings.snowflakesCount;
     const svgChanged = prevSVG !== this.settings.snowflakeSVG
 
     if (typeChanged || countChanged || svgChanged) {
       cancelAnimationFrame(this.animationFrameId);
+
       this.initSnowflakes();
       this.previousTimestamp = performance.now();
       this.animationFrameId = requestAnimationFrame(this.animationStep.bind(this));

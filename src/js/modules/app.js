@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       noFileToDownload: 'Файл для скачивания отсутствует',
       errorDeleteScript: 'Ошибка при удалении скрипта',
     },
+
     en: {
       invalidConfig: 'Error loading config:',
       invalidSVG: 'Please upload a valid SVG file',
@@ -39,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const htmlLang = document.documentElement.lang || 'ru';
   const currentLang = messages[htmlLang] ? htmlLang : 'ru';
-
   const snowflakesEntries = Object.entries(snowflakesSVGList);
+
   if (snowflakesEntries.length > 0) {
     const [key, value] = snowflakesEntries[0];
     defaultSettings.snowflakeType = key;
@@ -50,10 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const snowfall = new Snowfall('snow-container', {
     ...JSON.parse(JSON.stringify(defaultSettings))
   });
-
-  function getMessage(key) {
-    return messages[currentLang][key] || messages.en[key] || key;
-  }
 
   new Vue({
     el: '#app',
@@ -81,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rotationSpeed: {min: 10, max: 100},
       },
     },
+
     created() {
       fetch('/config.json')
         .then(response => response.json())
@@ -88,15 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
           this.apiBaseUrl = config.apiBaseUrl;
         })
         .catch(error => {
-          console.error(getMessage('invalidConfig'), error);
+          console.error(this.getMessage('invalidConfig'), error);
         });
     },
+
     watch: {
       customSnowflakeSVG(newSVG) {
         if (this.settings.snowflakeType === 'custom') {
           this.settings.snowflakeSVG = newSVG || '';
         }
       },
+
       'settings.snowflakeType'(newType) {
         if (newType !== 'custom') {
           this.settings.snowflakeSVG = this.snowflakesSVGList[newType] || '';
@@ -104,23 +104,31 @@ document.addEventListener('DOMContentLoaded', () => {
           this.settings.snowflakeSVG = this.customSnowflakeSVG || '';
         }
       },
+
       settings: {
         handler(newSettings) {
           snowfall.updateSettings(newSettings);
         },
         deep: true
       },
+
       isGenerated(newVal) {
         setCookie('isGenerated', newVal, 3);
       },
+
       generatedScriptUrl(newVal) {
         setCookie('generatedScriptUrl', newVal, 3);
       }
     },
     methods: {
+      getMessage(key) {
+        return messages[currentLang][key] || messages.en[key] || key;
+      },
+
       showSettings() {
         this.isSettings = true;
       },
+
       submitSettings() {
         this.isLoading = true;
 
@@ -133,8 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
           .then(async response => {
             if (!response.ok) {
-              throw new Error(getMessage('serverErrorGenerate'));
+              throw new Error(this.getMessage('serverErrorGenerate'));
             }
+
             const data = await response.json();
 
             this.generatedScriptUrl = data.scriptUrl;
@@ -147,9 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
           .catch(err => {
             console.error(err);
             this.isLoading = false;
-            alert(getMessage('serverErrorGenerate'));
+            alert(this.getMessage('serverErrorGenerate'));
           });
       },
+
       onCustomSVGUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -174,16 +184,17 @@ document.addEventListener('DOMContentLoaded', () => {
             this.customSnowflakeSVG = text;
             this.settings.snowflakeType = 'custom';
           } else {
-            alert(getMessage('invalidSVG'));
+            alert(this.getMessage('invalidSVG'));
           }
         };
 
         reader.onerror = () => {
-          alert(getMessage('readError'));
+          alert(this.getMessage('readError'));
         };
 
         reader.readAsText(file);
       },
+
       sliceFileName(name, maxLength = 20) {
         if (!name) return '';
         if (name.length <= maxLength) return name;
@@ -198,19 +209,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return baseName.slice(0, frontChars) + '...' + baseName.slice(baseName.length - backChars) + extension;
       },
+
       downloadScript() {
         if (!this.generatedScriptUrl) {
-          alert(getMessage('noFileToDownload'));
+          alert(this.getMessage('noFileToDownload'));
           return;
         }
+
         const link = document.createElement('a');
+
         link.href = this.apiBaseUrl + this.generatedScriptUrl;
         link.download = 'snowfall.zip';
-
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       },
+
       createNewScript() {
         this.isLoading = true;
 
@@ -227,10 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
           .then(async response => {
             if (!response.ok) {
-              throw new Error(getMessage('serverErrorDelete'));
+              throw new Error(this.getMessage('serverErrorDelete'));
             }
             deleteCookie('isGenerated');
             deleteCookie('generatedScriptUrl');
+
             this.isGenerated = false;
             this.generatedScriptUrl = '';
             this.customSnowflakeSVG = '';
@@ -245,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
           .catch(err => {
             console.error(err);
             this.isLoading = false;
-            alert(getMessage('errorDeleteScript'));
+            alert(this.getMessage('errorDeleteScript'));
           });
       },
     }

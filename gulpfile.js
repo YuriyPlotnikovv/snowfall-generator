@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const vinylFs = require('vinyl-fs');
 const through2 = require('through2');
 const fs = require('fs');
 const path = require('path');
@@ -164,7 +163,7 @@ function generateSnowflakesSVGModule(done) {
         ]
       })
     ]))
-    .pipe(through2.obj(function(file, _, cb) {
+    .pipe(through2.obj(function (file, _, cb) {
       if (file.isBuffer()) {
         const key = path.basename(file.path, '.svg');
         let content = file.contents.toString('utf8');
@@ -187,7 +186,7 @@ ${entries.join(',\n')}
       const outputFile = path.join(paths.snowflakes.dest, 'snowflakes-svg.js');
       const outputDir = path.dirname(outputFile);
       if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
+        fs.mkdirSync(outputDir, {recursive: true});
       }
 
       fs.writeFile(outputFile, fileContent, 'utf8', err => {
@@ -201,6 +200,7 @@ ${entries.join(',\n')}
       });
     });
 }
+
 exports.generateSnowflakesSVGModule = generateSnowflakesSVGModule;
 
 // Sprite
@@ -237,7 +237,7 @@ const sprite = () => {
           }
         });
       },
-      parserOptions: { xmlMode: true }
+      parserOptions: {xmlMode: true}
     }))
     .pipe(svgstore({inlineSvg: true}))
     .pipe(rename('sprite.svg'))

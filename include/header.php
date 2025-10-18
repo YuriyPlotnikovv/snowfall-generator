@@ -1,6 +1,5 @@
 <?php
 global $MESS, $LANG, $PATH;
-$badgeLabel = urlencode($MESS['SUPPORT_THE_AUTHOR']);
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +44,10 @@ $badgeLabel = urlencode($MESS['SUPPORT_THE_AUTHOR']);
                 </a>
             </div>
 
-            <a class="header__badge button button--default" href="https://yoomoney.ru/fundraise/1DA99C0NRL2.251010" target="_blank">
+            <a class="header__badge button button--default"
+               href="https://yoomoney.ru/fundraise/<?= YOOMONEY_CODE ?>"
+               target="_blank"
+            >
                 <?= $MESS['SUPPORT_THE_AUTHOR'] ?>
             </a>
 

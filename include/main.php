@@ -13,8 +13,11 @@ global $MESS;
                 <?= $MESS['WELCOME_TEXT'] ?>
             </p>
 
-            <button class="page__button button button--default" id="button-start" type="button"
-                    @click="showSettings">
+            <button class="page__button button button--default"
+                    id="button-start"
+                    type="button"
+                    @click="showSettings"
+            >
                 <?= $MESS['BUTTON_START'] ?>
             </button>
         </section>
@@ -31,23 +34,39 @@ global $MESS;
                 <fieldset class="form__fieldset form__fieldset--row" id="snowflake-type">
                     <legend class="form__legend"><?= $MESS['FIELDSET_SNOWFLAKE_TYPE'] ?></legend>
 
-                    <label class="form__label form__label--radio" v-for="(svg, key) in snowflakesSVGList"
-                           :key="key">
-                        <input class="form__input" type="radio" name="snowflakes-type" :value="key"
-                               v-model="settings.snowflakeType"/>
+                    <label class="form__label form__label--radio"
+                           v-for="(svg, key) in snowflakesSVGList"
+                           :key="key"
+                    >
+                        <input class="form__input"
+                               type="radio"
+                               name="snowflakes-type"
+                               :value="key"
+                               v-model="settings.snowflakeType"
+                        >
+
                         <span class="form__svg" v-html="svg"></span>
                     </label>
 
                     <label class="form__label form__label--radio">
-                        <input class="form__input" type="radio" name="snowflakes-type" value="custom"
-                               v-model="settings.snowflakeType"/>
-                        <span class="form__svg" v-if="customSnowflakeSVG"
-                              v-html="customSnowflakeSVG"></span>
-                        <input class="form__input form__input--file" type="file" accept=".svg"
-                               @change="onCustomSVGUpload" ref="fileInput"/>
-                        <button type="button" class="button button--default"
-                                @click="$refs.fileInput.click()">
-                            <span v-if="selectedFileName">{{selectedFileName}}</span>
+                        <input class="form__input"
+                               type="radio"
+                               name="snowflakes-type"
+                               value="custom"
+                               v-model="settings.snowflakeType"
+                        >
+
+                        <span class="form__svg" v-if="customSnowflakeSVG" v-html="customSnowflakeSVG"></span>
+
+                        <input class="form__input form__input--file"
+                               type="file"
+                               accept=".svg"
+                               @change="onCustomSVGUpload"
+                               ref="fileInput"
+                        >
+
+                        <button type="button" class="button button--default" @click="$refs.fileInput.click()">
+                            <span v-if="selectedFileName">{{ selectedFileName }}</span>
                             <span v-if="!selectedFileName"><?= $MESS['BUTTON_UPLOAD_FILE'] ?></span>
                         </button>
                     </label>
@@ -140,8 +159,11 @@ global $MESS;
                     <legend class="form__legend"><?= $MESS['FIELDSET_SWAY'] ?></legend>
 
                     <label class="form__label form__label--checkbox">
-                        <input class="form__input" type="checkbox" name="snowflakes-sway"
-                               v-model="settings.swayEnabled">
+                        <input class="form__input"
+                               type="checkbox"
+                               name="snowflakes-sway"
+                               v-model="settings.swayEnabled"
+                        >
 
                         <span class="form__label-text"><?= $MESS['LABEL_SWAY_ENABLED'] ?></span>
                     </label>
@@ -193,8 +215,11 @@ global $MESS;
                     <legend class="form__legend"><?= $MESS['FIELDSET_ROTATION'] ?></legend>
 
                     <label class="form__label form__label--checkbox">
-                        <input class="form__input" type="checkbox" name="snowflakes-rotation"
-                               v-model="settings.rotationEnabled">
+                        <input class="form__input"
+                               type="checkbox"
+                               name="snowflakes-rotation"
+                               v-model="settings.rotationEnabled"
+                        >
 
                         <span class="form__label-text"><?= $MESS['LABEL_ROTATION_ENABLED'] ?></span>
                     </label>
@@ -227,8 +252,11 @@ global $MESS;
                     <legend class="form__legend"><?= $MESS['FIELDSET_WIND'] ?></legend>
 
                     <label class="form__label form__label--checkbox">
-                        <input class="form__input" type="checkbox" name="snowflakes-wind"
-                               v-model="settings.windEnabled">
+                        <input class="form__input"
+                               type="checkbox"
+                               name="snowflakes-wind"
+                               v-model="settings.windEnabled"
+                        >
 
                         <span class="form__label-text"><?= $MESS['LABEL_WIND_ENABLED'] ?></span>
                     </label>
@@ -239,14 +267,25 @@ global $MESS;
                                 <span class="form__caption"><?= $MESS['LABEL_WIND_DIRECTION'] ?></span>
 
                                 <label class="form__label form__label--radio">
-                                    <input class="form__input" type="radio" name="wind-type" value="left" checked
-                                           v-model="settings.windType"/>
+                                    <input class="form__input"
+                                           type="radio"
+                                           name="wind-type"
+                                           value="left"
+                                           v-model="settings.windType"
+                                           checked
+                                    >
+
                                     <span class="form__label-text"><?= $MESS['LABEL_WIND_LEFT_TO_RIGHT'] ?></span>
                                 </label>
 
                                 <label class="form__label form__label--radio">
-                                    <input class="form__input" type="radio" name="wind-type" value="right"
-                                           v-model="settings.windType"/>
+                                    <input class="form__input"
+                                           type="radio"
+                                           name="wind-type"
+                                           value="right"
+                                           v-model="settings.windType"
+                                    >
+
                                     <span class="form__label-text"><?= $MESS['LABEL_WIND_RIGHT_TO_LEFT'] ?></span>
                                 </label>
                             </div>
@@ -293,15 +332,26 @@ global $MESS;
                 <?= $MESS['RESULT_TEXT'] ?>
             </p>
 
+            <a class="page__button button button--default"
+               href="https://yoomoney.ru/fundraise/<?= YOOMONEY_CODE ?>"
+               target="_blank"
+            >
+                <?= $MESS['SUPPORT_THE_AUTHOR'] ?>
+            </a>
+
             <button class="page__button button button--default"
                     id="button-download"
                     :disabled="!isGenerated || !generatedScriptUrl"
-                    @click="downloadScript">
+                    @click="downloadScript"
+            >
                 <?= $MESS['BUTTON_DOWNLOAD'] ?>
             </button>
 
-            <button class="page__button button button--default" type="reset"
-                    id="button-reset" @click="createNewScript">
+            <button class="page__button button button--accent"
+                    type="reset"
+                    id="button-reset"
+                    @click="createNewScript"
+            >
                 <?= $MESS['BUTTON_RESET'] ?>
             </button>
         </section>

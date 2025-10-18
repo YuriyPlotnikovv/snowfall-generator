@@ -1,4 +1,5 @@
 <?php
+
 class Tools
 {
     public static function includeFile(string $fileName): void
@@ -12,13 +13,15 @@ class Tools
         }
     }
 
-    public static function addTimestampToFile($filePath) {
+    public static function addTimestampToFile($filePath): string
+    {
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filePath)) {
             $timestamp = filemtime($_SERVER['DOCUMENT_ROOT'] . $filePath);
+
             return $filePath . '?v=' . $timestamp;
-        } else {
-            return $filePath;
         }
+
+        return $filePath;
     }
 
     public static function toggleLanguage($url): string
@@ -46,18 +49,19 @@ class Tools
             (isset($parsedUrl['fragment']) ? '#' . $parsedUrl['fragment'] : '');
     }
 
-    public static function getCurrentUrl()
+    public static function getCurrentUrl(): string
     {
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] === 443) ? 'https://' : 'http://';
         $host = $_SERVER['HTTP_HOST'];
         $requestUri = $_SERVER['REQUEST_URI'];
 
         return $protocol . $host . $requestUri;
     }
 
-    public static function getHrefLang(): string {
+    public static function getHrefLang(): string
+    {
         $url = self::getCurrentUrl();
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] === 443) ? 'https://' : 'http://';
         $host = $_SERVER['HTTP_HOST'];
         $server = $protocol . $host;
 
@@ -78,13 +82,14 @@ class Tools
         $hrefLangTags = [
             '<link rel="alternate" hreflang="x-default" href="' . htmlspecialchars($server) . '/" />',
             '<link rel="alternate" hreflang="ru" href="' . htmlspecialchars($server . $newPath) . '" />',
-            '<link rel="alternate" hreflang="en" href="' . htmlspecialchars($server . '/en' . $newPath) . '" />'
+            '<link rel="alternate" hreflang="en" href="' . htmlspecialchars($server . '/en' . $newPath) . '" />',
         ];
 
         return implode("\n", $hrefLangTags) . "\n";
     }
 
-    public static function getOpenGraphMetaTags($pageTitle, $pageDescription): string {
+    public static function getOpenGraphMetaTags($pageTitle, $pageDescription): string
+    {
         global $LANG;
 
         $title = htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8');
@@ -109,7 +114,8 @@ class Tools
         return implode("\n", $metaTags) . "\n";
     }
 
-    public static function getSchemaOrgTags(string $name, string $description): string {
+    public static function getSchemaOrgTags(string $name, string $description): string
+    {
         $currentUrl = htmlspecialchars(self::getCurrentUrl(), ENT_QUOTES, 'UTF-8');
 
         $data = [
