@@ -1,6 +1,6 @@
 # Snowfall Generator
 
-<img src=".info/poster.webp" alt="Poster" width="600" />
+
 
 [![Support the author](https://img.shields.io/badge/YooMoney-32CD32?style=for-the-badge&label=Support%20the%20author)](https://yoomoney.ru/fundraise/1DA99C0NRL2.251010)
 
@@ -23,16 +23,7 @@ Website with settings selection and Node.js server for generating a custom falli
 
 ### About the project
 
-#### Development date:
-
-- April 2025
-
-#### Pages:
-
-- Main
-
-#### Functionality:
-
+#### Functionality
 - Separate server for generation
 - English language (translations from variables), language detection based on page URL
 - Settings for appearance, size and behavior of snowflakes
@@ -40,8 +31,10 @@ Website with settings selection and Node.js server for generating a custom falli
 - Isolation of internal markup and styles of snowfall
 - Generation and minification of script for installation on the site
 
-#### Not implemented:
+#### Pages
+- Main
 
+#### Not Implemented
 - Choice of 2 types of snowflakes
 - Custom styles for input
 
@@ -74,16 +67,7 @@ Website: https://yuriyplotnikovv.ru
 
 ### О проекте
 
-#### Дата разработки:
-
-- Апрель 2025
-
-#### Страницы:
-
-- Главная
-
-#### Функциональность:
-
+#### Функциональность
 - Отдельный сервер для генерации
 - Английский язык (переводы из переменных), определение языка на основе url страницы
 - Настройки внешнего вида, размера и поведения снежинок
@@ -91,8 +75,10 @@ Website: https://yuriyplotnikovv.ru
 - Изоляция внутренней разметки и стилей снегопада
 - Генерация и минификация скрипта для установки на сайт
 
-#### Не реализовано:
+#### Страницы
+- Главная
 
+#### Не реализовано
 - Выбор 2х видов снежинок
 - Кастомные стили для input
 
