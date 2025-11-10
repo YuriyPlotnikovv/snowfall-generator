@@ -1,96 +1,62 @@
 {
-    "id": 10,
-    "title-ru": "Генератор снегопада",
-    "title-en": "Snowfall Generator",
-    "textFirst-ru": "Личный проект на PHP и JS",
-    "textFirst-en": "Personal project in PHP and JS",
-    "textSecond-ru": "Сайт с выбором настроек и Node.js сервер для генерации кастомного скрипта падающего снега на сайт. Скрипт генерируется с учётом заданных параметров и упаковывается в ZIP-архив вместе с лицензией и инструкцией.",
-    "textSecond-en": "Website with settings selection and Node.js server for generating a custom falling snow script for the site. The script is generated according to specified parameters and packaged into a ZIP archive with a license and instructions.",
-    "deploy": "https://snowfall-generator.ru/",
-    "features": [
-        {
-            "name-ru": "Дата разработки",
-            "name-en": "Development date",
-            "description-ru": [
-                "Апрель 2025"
-            ],
-            "description-en": [
-                "April 2025"
-            ]
-        },
-        {
-            "name-ru": "Страницы",
-            "name-en": "Pages",
-            "description-ru": [
-                "Главная"
-            ],
-            "description-en": [
-                "Main"
-            ]
-        },
-        {
-            "name-ru": "Функциональность",
-            "name-en": "Functionality",
-            "description-ru": [
-                "Отдельный сервер для генерации",
-                "Английский язык (переводы из переменных), определение языка на основе url страницы",
-                "Настройки внешнего вида, размера и поведения снежинок",
-                "Динамическое отображение выбранных параметров снегопада",
-                "Изоляция внутренней разметки и стилей снегопада",
-                "Генерация и минификация скрипта для установки на сайт"
-            ],
-            "description-en": [
-                "Separate server for generation",
-                "English language (translations from variables), language detection based on page URL",
-                "Settings for appearance, size and behavior of snowflakes",
-                "Dynamic display of selected snowfall parameters",
-                "Isolation of internal markup and styles of snowfall",
-                "Generation and minification of script for installation on the site"
-            ]
-        },
-        {
-            "name-ru": "Не реализовано",
-            "name-en": "Not implemented",
-            "description-ru": [
-                "Выбор 2х видов снежинок",
-                "Кастомные стили для input"
-            ],
-            "description-en": [
-                "Choice of 2 types of snowflakes",
-                "Custom styles for input"
-            ]
-        }
-    ],
+    "date": "04.2025",
+    "complexity": "2",
+    "category": "personal",
+    "deploy": "https:\/\/snowfall-generator.ru\/",
+    "title": {
+        "ru": "Генератор снегопада",
+        "en": "Snowfall Generator"
+    },
+    "textFirst": {
+        "ru": "Личный проект на PHP и JS",
+        "en": "Personal project in PHP and JS"
+    },
+    "textSecond": {
+        "ru": "Сайт с выбором настроек и Node.js сервер для генерации кастомного скрипта падающего снега на сайт. Скрипт генерируется с учётом заданных параметров и упаковывается в ZIP-архив вместе с лицензией и инструкцией.",
+        "en": "Website with settings selection and Node.js server for generating a custom falling snow script for the site. The script is generated according to specified parameters and packaged into a ZIP archive with a license and instructions."
+    },
+    "functionality": {
+        "ru": [
+            "Отдельный сервер для генерации",
+            "Английский язык (переводы из переменных), определение языка на основе url страницы",
+            "Настройки внешнего вида, размера и поведения снежинок",
+            "Динамическое отображение выбранных параметров снегопада",
+            "Изоляция внутренней разметки и стилей снегопада",
+            "Генерация и минификация скрипта для установки на сайт"
+        ],
+        "en": [
+            "Separate server for generation",
+            "English language (translations from variables), language detection based on page URL",
+            "Settings for appearance, size and behavior of snowflakes",
+            "Dynamic display of selected snowfall parameters",
+            "Isolation of internal markup and styles of snowfall",
+            "Generation and minification of script for installation on the site"
+        ]
+    },
     "technologies": [
-        {
-            "name": "HTML",
-            "icon": "icon-html",
-            "link": "https://html.spec.whatwg.org/multipage/"
-        },
-        {
-            "name": "SCSS",
-            "icon": "icon-scss",
-            "link": "https://sass-scss.ru/"
-        },
-        {
-            "name": "JavaScript",
-            "icon": "icon-js",
-            "link": "https://ecma-international.org/publications-and-standards/standards/ecma-262/"
-        },
-        {
-            "name": "Vue",
-            "icon": "icon-vue",
-            "link": "https://vuejs.org/"
-        },
-        {
-            "name": "PHP",
-            "icon": "icon-php",
-            "link": "https://www.php.net/"
-        },
-        {
-            "name": "Gulp",
-            "icon": "icon-gulp",
-            "link": "https://gulpjs.com/"
-        }
-    ]
+        "html",
+        "scss",
+        "javascript",
+        "vue",
+        "php",
+        "gulp"
+    ],
+    "pages": {
+        "ru": [
+            "Главная"
+        ],
+        "en": [
+            "Main"
+        ]
+    },
+    "notImplemented": {
+        "ru": [
+            "Выбор 2х видов снежинок",
+            "Кастомные стили для input"
+        ],
+        "en": [
+            "Choice of 2 types of snowflakes",
+            "Custom styles for input"
+        ]
+    }
 }
