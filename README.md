@@ -1,6 +1,6 @@
 # Snowfall Generator
 
-
+<img src=".info/poster.webp" alt="Poster" width="600" />
 
 [![Support the author](https://img.shields.io/badge/YooMoney-32CD32?style=for-the-badge&label=Support%20the%20author)](https://yoomoney.ru/fundraise/1DA99C0NRL2.251010)
 
